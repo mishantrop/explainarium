@@ -1,4 +1,4 @@
-package com.quasigames.explianarium
+package com.quasigames.explianarium.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.activity_preparing.*
 
 
 class PreparingActivity : AppCompatActivity() {
+    private var timer: CountDownTimer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preparing)
@@ -16,14 +18,14 @@ class PreparingActivity : AppCompatActivity() {
         val subject = intent.getStringExtra("subject")
 
         prepare_counter_text.text = "4"
-        var textGo = "Погнали"
+        val textGo = "Погнали"
 
         val gameIntent = Intent(this, GameActivity::class.java)
         gameIntent.putExtra("subject", subject)
 
-        object : CountDownTimer(4000, 100) {
+        timer = object : CountDownTimer(4000, 100) {
             override fun onTick(millisUntilFinished: Long) {
-                var text = (millisUntilFinished / 1000).toString()
+                val text = (millisUntilFinished / 1000).toString()
                 if (text === "0") {
                     prepare_counter_text.text = textGo
                 } else {
@@ -37,5 +39,10 @@ class PreparingActivity : AppCompatActivity() {
                 startActivity(gameIntent)
             }
         }.start()
+    }
+
+    override fun finish() {
+        super.finish()
+        timer?.cancel()
     }
 }

@@ -4,21 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.quasigames.explianarium.GameSummaryActivity">
+    android:background="@color/backgroundLight"
+    tools:context="com.quasigames.explianarium.activity.GameSummaryActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ну и норм"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:textAlignment="center">
 
-    <Button
-        android:id="@+id/button_go_to_catalog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Давай заного"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="57dp" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ну и норм"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/button_go_to_catalog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="В начало" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

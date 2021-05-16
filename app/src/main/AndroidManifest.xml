@@ -12,15 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.quasigames.explianarium.GameSummaryActivity"></activity>
-        <activity android:name="com.quasigames.explianarium.GameActivity" />
-        <activity android:name="com.quasigames.explianarium.PreparingActivity" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/application_id_debug" />
-
-        <activity android:name=".AdActivity" />
+        <activity android:name="com.quasigames.explianarium.activity.CatalogActivity"></activity>
+        <activity android:name="com.quasigames.explianarium.activity.GameSummaryActivity" />
+        <activity android:name="com.quasigames.explianarium.activity.GameActivity" />
+        <activity android:name="com.quasigames.explianarium.activity.PreparingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/application_id_debug" />
     </application>
 
 </manifest>

@@ -8,10 +8,22 @@
     android:screenOrientation="portrait"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:background="@color/backgroundLight"
-        android:id="@+id/catalog"
+    <ScrollView
+        android:id="@+id/catalog_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"/>
+        android:background="@color/backgroundLight"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp">
+
+        <LinearLayout
+            android:id="@+id/catalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

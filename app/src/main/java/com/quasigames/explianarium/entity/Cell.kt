@@ -1,4 +1,4 @@
-package com.quasigames.explainarium
+package com.quasigames.explianarium.entity
 
 import android.widget.Button
 

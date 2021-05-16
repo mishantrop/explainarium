@@ -1,6 +1,6 @@
-package menu
+package com.quasigames.explianarium.entity
 
-import com.quasigames.explainarium.Field
+import com.quasigames.explianarium.entity.Field
 
 class Gameplay {
     private var field: Field? = null

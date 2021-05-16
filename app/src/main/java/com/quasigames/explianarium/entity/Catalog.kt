@@ -1,7 +1,6 @@
-package com.quasigames.explainarium
+package com.quasigames.explianarium.entity
 
 import java.util.Collection
-import com.quasigames.explainarium.CatalogSubject
 
 class Catalog {
     public var subjects: Collection<CatalogSubject>? = null

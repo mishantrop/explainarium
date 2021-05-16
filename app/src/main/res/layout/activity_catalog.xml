@@ -2,18 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/explainarium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLight"
-    tools:context="com.quasigames.explianarium.activity.PreparingActivity">
+    android:screenOrientation="portrait"
+    tools:context="com.quasigames.explianarium.activity.CatalogActivity">
 
-    <TextView
-        android:id="@+id/prepare_counter_text"
+    <LinearLayout
+        android:id="@+id/catalog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:text="3"
-        android:textAlignment="center"
-        android:textColor="@color/text"
-        android:textSize="64sp" />
+        android:orientation="vertical"
+        android:padding="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

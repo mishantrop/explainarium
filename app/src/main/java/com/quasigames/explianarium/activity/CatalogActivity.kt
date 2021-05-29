@@ -87,7 +87,7 @@ class CatalogActivity : AppCompatActivity() {
                 }
 
                 // Изоброжение
-                val imageFilename = "catalog_${subject.id}.jpg"
+                val imageFilename = "catalog_${subject.id}.png"
                 if (assetsA.contains(imageFilename)) {
                     val subjectImage = ImageView(this)
                     val ims: InputStream = assets.open( imageFilename)
@@ -95,7 +95,7 @@ class CatalogActivity : AppCompatActivity() {
                     subjectImage.setImageDrawable(d)
                     subjectImage.layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        300
+                        500
                     )
                     subjectCard.addView(subjectImage)
                 }

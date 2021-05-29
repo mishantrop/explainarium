@@ -4,88 +4,155 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlin.collections.Collection
 
 import com.quasigames.explianarium.entity.CatalogSubject
 import com.quasigames.explainarium.R
 
 class GameActivity : AppCompatActivity() {
+    private var builder: GsonBuilder? = null
     private var currentWordIdx = 0
+    private var lifetime: Long = 120_000
     private var timer: CountDownTimer? = null
+    private var subject: CatalogSubject? = null
+    private var wordsShuffled: List<String>? = null
+//    private var wordsStat: MutableMap<String?, Boolean?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_game)
+            builder = GsonBuilder()
+            val gson = builder?.create()
 
-        val subjectJSON = intent.getStringExtra("subject")
+            subject = gson?.fromJson(intent.getStringExtra("subject"), CatalogSubject::class.java)
+            wordsShuffled = subject?.words?.shuffled()
 
-        val builder = GsonBuilder()
-        val gson = builder.create()
-        val subject = gson.fromJson(subjectJSON, CatalogSubject::class.java)
-        val wordsShuffled = subject.words.shuffled()
+            println("Explainarium: " + wordsShuffled?.size)
 
-        val wordsStat = mutableMapOf<String, Boolean?>()
-        wordsShuffled.forEach { word -> wordsStat[word] = null }
+            //        wordsStat = mutableMapOf<String?, Boolean?>()
+            wordsShuffled?.forEach { word ->
+                println("Explainarium: adding word " + word)
+//                wordsStat!![word] = null
+            }
 
-        render(wordsShuffled)
+            render()
 
-        game_correct.setOnClickListener {
-            val word = getCurrentWord(subject.words)
-            wordsStat[word] = true
-            setNextWord(wordsShuffled)
+            game_correct.setOnClickListener {
+                val word = getCurrentWord()
+//                wordsStat!![word] = true
+                setNextWord()
 
-            println(wordsStat)
+//                println(wordsStat)
+            }
+
+            game_incorrect.setOnClickListener {
+                setNextWord()
+            }
+
+            initTimer(lifetime)
+        } catch (error: Exception) {
+            println("Explainarium: " + error)
+            println("Explainarium: " + error.message)
+            println("Explainarium: " + error.cause)
+            error.stackTrace.forEach {x ->
+                println("Explainarium: $x")
+            }
+//            val errorToast = Toast.makeText(this, error.message, Toast.LENGTH_LONG)
+//            errorToast.show()
         }
+    }
 
-        game_incorrect.setOnClickListener {
-            setNextWord(wordsShuffled)
-        }
-
-        timer = object : CountDownTimer(10_000, 100) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (millisUntilFinished <= 0) {
-                    game_timer.text = "Время истекло"
-                } else {
-                    game_timer.text = formatTime(millisUntilFinished / 1000)
+    private fun initTimer(value: Long) {
+        try {
+            println("Explainarium: init timer $value")
+            timer?.cancel()
+            timer = object : CountDownTimer(value, 100) {
+                override fun onTick(millisUntilFinished: Long) {
+                    if (millisUntilFinished <= 0) {
+                        game_timer.text = "Время истекло"
+                    } else {
+                        game_timer.text = formatTime(millisUntilFinished / 1000)
+                    }
                 }
-            }
 
-            override fun onFinish() {
-                game_timer.text = "Время истекло"
+                override fun onFinish() {
+                    println("Explainarium: timer is over")
+                    game_timer.text = "Время истекло"
 
-                finishGame()
-            }
-        }.start()
+                    finishGame()
+                }
+            }.start()
+        } catch (error: Exception) {
+            println("Explainarium: " + error)
+            println("Explainarium: " + error.message)
+//            val errorToast = Toast.makeText(this, error.message, Toast.LENGTH_LONG)
+//            errorToast.show()
+        }
     }
 
-    private fun getCurrentWord(words: Collection<String>): String {
-        return words.elementAt(currentWordIdx)
+    private fun getCurrentWord(): String? {
+        try {
+            return wordsShuffled?.elementAt(currentWordIdx)
+        } catch (error: Exception) {
+            println("Explainarium: " + error)
+            println("Explainarium: " + error.message)
+        }
+        return ""
     }
 
-    private fun render(wordsShuffled: Collection<String>) {
-        game_current_word.text = getCurrentWord(wordsShuffled)
+    private fun render() {
+        println("Explainarium: getCurrentWord: " + getCurrentWord())
+        game_current_word.text = getCurrentWord()
     }
 
-    private fun setNextWord(wordsShuffled: Collection<String>) {
-        if (currentWordIdx + 1 < wordsShuffled.size) {
+    private fun setNextWord() {
+        if (currentWordIdx + 1 < wordsShuffled?.size!!) {
             currentWordIdx += 1
-            render(wordsShuffled)
+            render()
         } else {
             finishGame()
         }
     }
 
     private fun finishGame() {
+        val builder = GsonBuilder()
+        val gson = builder.create()
+
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
+        gameSummaryIntent.putExtra("subject", gson.toJson("Hello"))
         startActivity(gameSummaryIntent)
     }
 
     private fun formatTime(totalSecs: Long): String {
         return DateUtils.formatElapsedTime(totalSecs)
     }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        println("Explainarium: onSaveInstanceState")
+//        super.onSaveInstanceState(outState)
+//
+//        outState.putLong("lifetime", lifetime)
+////
+////        outState.putInt("field.width", field.width!!)
+////        outState.putInt("field.height", field.height!!)
+//
+//        outState.putAll(outState)
+//    }
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        println("Explainarium: onRestoreInstanceState")
+//        super.onRestoreInstanceState(savedInstanceState)
+//
+//        timer?.cancel()
+//
+//        lifetime = savedInstanceState.getLong("lifetime")
+////
+////        field.init(this, fieldGrid!!, savedInstanceState.getInt("field.width"), savedInstanceState.getInt("field.height"))
+//    }
 
     override fun finish() {
         super.finish()

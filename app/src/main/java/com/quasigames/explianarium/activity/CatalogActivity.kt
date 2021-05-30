@@ -20,7 +20,7 @@ import java.io.BufferedReader
 import java.io.InputStream
 
 class CatalogActivity : AppCompatActivity() {
-    private val isDev = true
+    private val isDev = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

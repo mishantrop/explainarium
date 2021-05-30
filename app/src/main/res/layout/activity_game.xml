@@ -18,22 +18,28 @@
             android:id="@+id/game_timer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00:00"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/game_initial_timer"
             android:textAlignment="center"
-            android:textColor="@color/text"
+            android:textColor="@color/textSecondary"
             android:textSize="28sp" />
 
         <TextView
             android:id="@+id/game_current_word"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
             android:gravity="center_vertical"
-            android:text="-"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="32dp"
             android:textAlignment="center"
-            android:textColor="@color/text"
-            android:textSize="64sp" />
+            android:textColor="@color/text" />
 
         <LinearLayout
+            android:id="@+id/game_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -44,14 +50,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Верно" />
+                android:paddingTop="32dp"
+                android:paddingBottom="32dp"
+                android:text="@string/game_correct" />
 
             <Button
                 android:id="@+id/game_incorrect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="НЕВЕРНО" />
+                android:paddingTop="32dp"
+                android:paddingBottom="32dp"
+                android:text="@string/game_incorrect" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

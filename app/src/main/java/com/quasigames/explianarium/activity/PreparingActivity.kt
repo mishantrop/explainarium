@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_preparing.*
 
 class PreparingActivity : AppCompatActivity() {
     private var timer: CountDownTimer? = null
+    private val initialTimerValueSecs: Long = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,20 +18,17 @@ class PreparingActivity : AppCompatActivity() {
 
         val subject = intent.getStringExtra("subject")
 
-        prepare_counter_text.text = "4"
-        val textGo = "Погнали"
+        prepare_counter_text.text = (initialTimerValueSecs + 1).toString()
+        val textGo = getString(R.string.preparing_go)
 
         val gameIntent = Intent(this, GameActivity::class.java)
         gameIntent.putExtra("subject", subject)
 
-        timer = object : CountDownTimer(4000, 100) {
+        timer = object : CountDownTimer(initialTimerValueSecs * 1000, 100) {
             override fun onTick(millisUntilFinished: Long) {
-                val text = (millisUntilFinished / 1000).toString()
-                if (text === "0") {
-                    prepare_counter_text.text = textGo
-                } else {
-                    prepare_counter_text.text = text
-                }
+                val timeLeft = millisUntilFinished / 1000
+                val text = timeLeft.toString()
+                prepare_counter_text.text = if (timeLeft <= 0) textGo else text
             }
 
             override fun onFinish() {

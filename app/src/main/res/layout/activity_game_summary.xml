@@ -15,20 +15,27 @@
         android:textAlignment="center">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/game_summary_normalno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ну и норм"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp"
+            android:text="@string/game_summary_normalno"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="32sp" />
 
         <Button
-            android:id="@+id/button_go_to_catalog"
+            android:id="@+id/button_goto_catalog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="В начало" />
+            android:paddingLeft="32dp"
+            android:paddingTop="32dp"
+            android:paddingRight="32dp"
+            android:paddingBottom="32dp"
+            android:text="@string/game_summary_goto_catalog"
+            android:textAlignment="center" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

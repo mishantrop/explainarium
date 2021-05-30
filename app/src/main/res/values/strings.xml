@@ -1,17 +1,14 @@
 <resources>
     <string name="app_name">Объясняриум</string>
+    <string name="catalog_subject_complexity">Сложность: %1$s</string>
+    <string name="game_time_is_over">Время истекло</string>
+    <string name="game_summary_normalno">Ну и норм</string>
+    <string name="game_summary_goto_catalog">В начало</string>
+    <string name="game_initial_timer">00:00</string>
+    <string name="game_correct">Верно</string>
+    <string name="game_incorrect">Неверно</string>
+    <string name="preparing_go">Погнали</string>
 
-    <string name="title_activity_ad">AdActivity</string>
-
-    <string name="action_show_ad">Показать рекламу</string>
-    <string name="action_disable_ad">Отключить рекламу</string>
-    <string name="action_enable_ad">Отключить рекламу</string>
-    <string name="action_set_light_theme">Светлая тема</string>
-    <string name="action_set_dark_theme">Тёмная тема</string>
-
-    <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
-    <string name="start_level">Level 1</string>
-    <string name="next_level">Next Level</string>
     <!-- -
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
         For more information, see https://support.google.com/admob/answer/3052638

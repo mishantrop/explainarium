@@ -2,12 +2,14 @@ package com.quasigames.explianarium.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 //import androidx.cardview.widget.CardView
 import com.google.gson.GsonBuilder
@@ -18,7 +20,7 @@ import java.io.BufferedReader
 import java.io.InputStream
 
 class CatalogActivity : AppCompatActivity() {
-    private var catalogLayout: LinearLayout? = null
+    private val isDev = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,96 +30,10 @@ class CatalogActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        catalogLayout = findViewById(R.id.catalog)
-
         try {
-            val assetsList: List<Array<String>?> = listOf(resources.assets.list(""))
-            var assetsFilesCount = 0
-            assetsList.forEachIndexed{index, filenames ->
-                if (index == 0) {
-                    filenames?.forEach { filename ->
-                        assetsFilesCount = assetsFilesCount + 1
-                    }
-                }
-            }
-            val assetsA = Array<String>(assetsFilesCount){""}
-            assetsList.forEachIndexed{index, filenames ->
-                if (index == 0) {
-                    filenames?.forEachIndexed { idx, filename ->
-                        assetsA[idx] = filename
-                    }
-                }
-            }
+            val catalog = getCatalogFromFile()
 
-            val preparingIntent = Intent(this, PreparingActivity::class.java)
-
-            println("Explainarium: reading catalog.json")
-            val catalogDataJSON = getAssetsFileContent(this, "catalog.json")
-
-            val builder = GsonBuilder()
-            val gson = builder.create()
-            val catalog = gson.fromJson(catalogDataJSON, Catalog::class.java)
-
-            val subjectCardLayoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            subjectCardLayoutParams.bottomMargin = 20
-
-            catalog.subjects?.forEach { subject ->
-                val subjectCard = LinearLayout(this)
-                val subjectButton = Button(this)
-                val subjectComplexity = TextView(this)
-
-                // Кнопка
-                subjectButton.text = subject.title
-                subjectButton.height = 100
-                subjectButton.width = 100
-                subjectButton.setOnClickListener {
-                    goToSubject(preparingIntent, gson, subject)
-                }
-
-                // Карточка
-                subjectCard.layoutParams = subjectCardLayoutParams
-                subjectCard.orientation = LinearLayout.VERTICAL
-                subjectCard.setBackgroundColor(Color.WHITE)
-                subjectCard.setPadding(0, 10, 0,0)
-                subjectCard.setOnClickListener {
-                    goToSubject(preparingIntent, gson, subject)
-                }
-
-                // Изоброжение
-                val imageFilename = "catalog_${subject.id}.png"
-                if (assetsA.contains(imageFilename)) {
-                    val subjectImage = ImageView(this)
-                    val ims: InputStream = assets.open( imageFilename)
-                    val d = Drawable.createFromStream(ims, null)
-                    subjectImage.setImageDrawable(d)
-                    subjectImage.layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        500
-                    )
-                    subjectCard.addView(subjectImage)
-                }
-
-                // Сложность
-                val complexityEmoji = when (subject.complexity) {
-                    1 -> "\uD83C\uDF1D\uD83C\uDF1A\uD83C\uDF1A"
-                    2 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1A"
-                    3 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D"
-                    else -> {
-                        "\uD83C\uDF1A\uD83C\uDF1A\uD83C\uDF1A"
-                    }
-                }
-                subjectComplexity.text = "Сложность: $complexityEmoji"
-                subjectComplexity.textAlignment = View.TEXT_ALIGNMENT_CENTER
-
-                // Собираем всё вместе
-                subjectCard.addView(subjectComplexity)
-                subjectCard.addView(subjectButton)
-
-                catalogLayout?.addView(subjectCard)
-            }
+            buildCatalogViews(catalog.subjects)
         } catch (error: Exception) {
             println("Explainarium: " + error.message)
             val errorToast = Toast.makeText(this, error.message, Toast.LENGTH_LONG)
@@ -125,12 +41,119 @@ class CatalogActivity : AppCompatActivity() {
         }
     }
 
-    fun goToSubject(preparingIntent: Intent, gson: Gson, subject: CatalogSubject) {
+    private fun getCatalogFromFile(): Catalog {
+        println("Explainarium: reading catalog.json")
+        val catalogFilename = if (isDev) "catalog_dev.json" else "catalog.json"
+        val catalogDataJSON = getAssetsFileContent(this, catalogFilename)
+
+        val builder = GsonBuilder()
+        val gson = builder.create()
+
+        return gson.fromJson(catalogDataJSON, Catalog::class.java)
+    }
+
+    private fun getAssetsFilenames(): Array<String> {
+        val assetsList: List<Array<String>?> = listOf(resources.assets.list(""))
+        var assetsFilesCount = 0
+        assetsList.forEachIndexed{index, filenames ->
+            if (index == 0) {
+                filenames?.forEach { _ ->
+                    assetsFilesCount += 1
+                }
+            }
+        }
+        val assetsA = Array(assetsFilesCount){""}
+        assetsList.forEachIndexed{index, filenames ->
+            if (index == 0) {
+                filenames?.forEachIndexed { idx, filename ->
+                    assetsA[idx] = filename
+                }
+            }
+        }
+
+        return assetsA
+    }
+
+    private fun buildCatalogViews(subjects: Collection<CatalogSubject>?) {
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        val catalogLayout: LinearLayout = findViewById(R.id.catalog)
+        catalogLayout.removeAllViewsInLayout()
+        val preparingIntent = Intent(this, PreparingActivity::class.java)
+
+        val assetsA = getAssetsFilenames()
+
+        val subjectCardLayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        subjectCardLayoutParams.bottomMargin = 20
+
+        subjects?.forEach { subject ->
+            val subjectCard = LinearLayout(this)
+            val subjectButton = Button(this)
+            val subjectComplexity = TextView(this)
+
+            // Кнопка
+            subjectButton.text = subject.title
+            subjectButton.height = 100
+            subjectButton.width = 100
+            subjectButton.setOnClickListener {
+                goToSubject(preparingIntent, gson, subject)
+            }
+
+            // Карточка
+            subjectCard.layoutParams = subjectCardLayoutParams
+            subjectCard.orientation = LinearLayout.VERTICAL
+//            subjectCard.setBackgroundColor(Color.WHITE)
+            subjectCard.background = ContextCompat.getDrawable(this, R.drawable.rounded_edge)
+            subjectCard.setPadding(0, 10, 0,0)
+            subjectCard.setOnClickListener {
+                goToSubject(preparingIntent, gson, subject)
+            }
+
+            // Изображение
+            val imageFilename = "catalog_${subject.id}.png"
+            if (assetsA.contains(imageFilename)) {
+                val subjectImage = ImageView(this)
+                val ims: InputStream = assets.open( imageFilename)
+                val d = Drawable.createFromStream(ims, null)
+                subjectImage.setImageDrawable(d)
+                subjectImage.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    500
+                )
+                subjectCard.addView(subjectImage)
+            }
+
+            // Сложность
+            val complexityEmoji = when (subject.complexity) {
+                1 -> "\uD83C\uDF1D\uD83C\uDF1A\uD83C\uDF1A"
+                2 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1A"
+                3 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D"
+                else -> {
+                    "\uD83C\uDF1A\uD83C\uDF1A\uD83C\uDF1A"
+                }
+            }
+            val res: Resources = resources
+//            subjectComplexity.text = "Сложность: $complexityEmoji"
+            subjectComplexity.text = String.format(res.getString(R.string.catalog_subject_complexity), complexityEmoji)
+            subjectComplexity.textAlignment = View.TEXT_ALIGNMENT_CENTER
+
+            // Собираем всё вместе
+            subjectCard.addView(subjectComplexity)
+            subjectCard.addView(subjectButton)
+
+            catalogLayout.addView(subjectCard)
+        }
+    }
+
+    private fun goToSubject(preparingIntent: Intent, gson: Gson, subject: CatalogSubject) {
         preparingIntent.putExtra("subject", gson.toJson(subject))
         startActivity(preparingIntent)
     }
 
-    fun getAssetsFileContent(context: Context, fileName: String): String =
+    private fun getAssetsFileContent(context: Context, fileName: String): String =
         context
             .assets
             .open(fileName)

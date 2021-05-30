@@ -1,5 +1,6 @@
 package com.quasigames.explianarium.activity
 
+//import android.content.pm.ActivityInfo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +12,7 @@ class GameSummaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_summary)
 
-        button_go_to_catalog.setOnClickListener {
+        button_goto_catalog.setOnClickListener {
             goToCatalog()
             finish()
         }

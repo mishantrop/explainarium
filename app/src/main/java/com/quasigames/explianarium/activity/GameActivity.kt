@@ -6,19 +6,46 @@ import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.activity_game.*
-
-import com.quasigames.explianarium.entity.CatalogSubject
+import com.google.gson.reflect.TypeToken
 import com.quasigames.explainarium.R
+import com.quasigames.explianarium.entity.CatalogSubject
+import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
     private var builder: GsonBuilder? = null
     private var currentWordIdx = 0
     private var lifetime: Long = 120_000
     private var timer: CountDownTimer? = null
-    private var subject: CatalogSubject? = null
-    private var wordsShuffled: List<String>? = null
+    private var words: MutableList<String> = mutableListOf()
     private var wordsStat: MutableMap<String?, Boolean?>? = null
+    private var isFirstInitialization = true
+
+    private fun getWordsFromSubject(subjectJSON: String): MutableList<String> {
+        builder = GsonBuilder()
+        val gson = builder?.create()
+        val subjectInstance = gson?.fromJson(subjectJSON, CatalogSubject::class.java)
+        val wordsShuffled = subjectInstance?.words
+        val words2 = wordsShuffled?.toMutableList()
+
+        if (words2 != null) {
+            return words2
+        }
+
+        return mutableListOf()
+    }
+
+    private fun getWordsFormSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
+        val wordsJSON = savedInstanceState.getString("words")
+        if (wordsJSON != null) {
+            builder = GsonBuilder()
+            val gson = builder?.create()
+            if (gson != null) {
+                val wordsType = object : TypeToken<List<String>>() {}.type
+                return gson.fromJson(wordsJSON, wordsType)
+            }
+        }
+        return mutableListOf()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,31 +53,31 @@ class GameActivity : AppCompatActivity() {
         try {
             setContentView(R.layout.activity_game)
 
-            builder = GsonBuilder()
-            val gson = builder?.create()
-
-            subject = gson?.fromJson(intent.getStringExtra("subject"), CatalogSubject::class.java)
-            wordsShuffled = subject?.words?.toList()
-//            wordsShuffled = subject?.words?.shuffled()
-
-            println("Explainarium | Count of words: " + wordsShuffled?.size)
-
-            wordsStat = mutableMapOf<String?, Boolean?>()
-            wordsShuffled?.forEach { word ->
-                wordsStat!![word] = null
+            if (savedInstanceState != null) {
+                isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
             }
+            if (isFirstInitialization) {
+                words = getWordsFromSubject(intent.getStringExtra("subject")!!)
+            } else if (savedInstanceState != null) {
+//                currentWordIdx = savedInstanceState.getInt("currentWordIdx")
+                words = getWordsFormSavedInstanceState(savedInstanceState)
+            }
+
+            wordsStat = mutableMapOf()
 
             render()
 
             game_correct.setOnClickListener {
                 val word = getCurrentWord()
                 wordsStat!![word] = true
+                words[currentWordIdx] = ""
                 setNextWord()
             }
 
             game_incorrect.setOnClickListener {
                 val word = getCurrentWord()
                 wordsStat!![word] = false
+                words[currentWordIdx] = ""
                 setNextWord()
             }
 
@@ -68,7 +95,7 @@ class GameActivity : AppCompatActivity() {
     private fun initTimer(value: Long) {
         val countDownInterval: Long = 100
         try {
-            println("Explainarium | init timer $value")
+//            println("Explainarium | init timer $value")
             timer?.cancel()
             timer = object : CountDownTimer(value, countDownInterval) {
                 override fun onTick(millisUntilFinished: Long) {
@@ -82,7 +109,7 @@ class GameActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    println("Explainarium | Time is over")
+//                    println("Explainarium | Time is over")
                     game_timer.text = getString(R.string.game_time_is_over)
 
                     finishGame()
@@ -98,22 +125,25 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCurrentWord(): String? {
-        return wordsShuffled?.elementAt(currentWordIdx)
+    private fun getCurrentWord(): String {
+        if (words.size > currentWordIdx) {
+            return words.elementAt(currentWordIdx)
+        }
+
+        return ":("
     }
 
-//    private fun getTimerHeight() {
-//        game_timer.measuredHeight
-//    }
-//
-//    private fun getButtonsHeight() {
-//        game_buttons.measuredHeight
-//    }
+    private fun xxx(x: String) {
+        println("Explainarium $x")
+    }
 
     private fun render() {
         val currentWord = getCurrentWord()
 
-        val fontSize = when (currentWord?.length) {
+        xxx(currentWordIdx.toString())
+        xxx(currentWord)
+
+        val fontSize = when (currentWord.length) {
             1 -> 64.0F
             2 -> 64.0F
             3 -> 64.0F
@@ -146,7 +176,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setNextWord() {
-        if (currentWordIdx + 1 < wordsShuffled?.size!!) {
+        if (currentWordIdx + 1 < words.size) {
             currentWordIdx += 1
             render()
         } else {
@@ -168,21 +198,33 @@ class GameActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putLong("lifetime", lifetime)
-
+        builder = GsonBuilder()
+        val gson = builder?.create()
         timer?.cancel()
 
-        outState.putAll(outState)
+        outState.run {
+            outState.putBoolean("isFirstInitialization", false)
+//            outState.putInt("currentWordIdx", currentWordIdx)
+            outState.putLong("lifetime", lifetime)
+            val wordsToSave = words.filter { word -> word !== "" }
+            if (gson != null) {
+                outState.putString("words", gson.toJson(wordsToSave))
+                xxx(gson.toJson(wordsToSave))
+            }
+        }
+
+//        outState.putAll(outState)
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
         lifetime = savedInstanceState.getLong("lifetime")
+        isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
 
         initTimer(lifetime)
+
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun finish() {

@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Объясняриум</string>
     <string name="catalog_subject_complexity">Сложность: %1$s</string>
-    <string name="game_time_is_over">Время истекло</string>
-    <string name="game_summary_normalno">Ну и норм</string>
+    <string name="game_time_is_over">⏰ Время истекло</string>
+    <string name="game_summary_normalno">👍 Ну и норм</string>
     <string name="game_summary_goto_catalog">В начало</string>
     <string name="game_initial_timer">00:00</string>
-    <string name="game_correct">Верно</string>
-    <string name="game_incorrect">Неверно</string>
+    <string name="game_correct">✅ Верно</string>
+    <string name="game_incorrect">❌ Неверно</string>
     <string name="preparing_go">Погнали</string>
 
     <!-- -

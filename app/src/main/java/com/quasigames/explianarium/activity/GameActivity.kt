@@ -24,7 +24,7 @@ class GameActivity : AppCompatActivity() {
         builder = GsonBuilder()
         val gson = builder?.create()
         val subjectInstance = gson?.fromJson(subjectJSON, CatalogSubject::class.java)
-        val wordsShuffled = subjectInstance?.words
+        val wordsShuffled = subjectInstance?.words?.shuffled()
         val words2 = wordsShuffled?.toMutableList()
 
         if (words2 != null) {
@@ -133,15 +133,12 @@ class GameActivity : AppCompatActivity() {
         return ":("
     }
 
-    private fun xxx(x: String) {
-        println("Explainarium $x")
-    }
+//    private fun xxx(x: String) {
+//        println("Explainarium $x")
+//    }
 
     private fun render() {
         val currentWord = getCurrentWord()
-
-        xxx(currentWordIdx.toString())
-        xxx(currentWord)
 
         val fontSize = when (currentWord.length) {
             1 -> 64.0F
@@ -204,12 +201,10 @@ class GameActivity : AppCompatActivity() {
 
         outState.run {
             outState.putBoolean("isFirstInitialization", false)
-//            outState.putInt("currentWordIdx", currentWordIdx)
             outState.putLong("lifetime", lifetime)
             val wordsToSave = words.filter { word -> word !== "" }
             if (gson != null) {
                 outState.putString("words", gson.toJson(wordsToSave))
-                xxx(gson.toJson(wordsToSave))
             }
         }
 

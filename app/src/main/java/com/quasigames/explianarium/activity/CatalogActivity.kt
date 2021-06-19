@@ -3,15 +3,14 @@ package com.quasigames.explianarium.activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
-//import androidx.cardview.widget.CardView
 import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.R
 import com.quasigames.explianarium.entity.Catalog
@@ -39,6 +38,30 @@ class CatalogActivity : AppCompatActivity() {
             val errorToast = Toast.makeText(this, error.message, Toast.LENGTH_LONG)
             errorToast.show()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_privacy_policy -> {
+                redirectToPrivacyPolicy()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun redirectToPrivacyPolicy() {
+        val url = "https://quasi-art.ru/quasigames/explainarium/privacy-policy"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
     }
 
     private fun getCatalogFromFile(): Catalog {

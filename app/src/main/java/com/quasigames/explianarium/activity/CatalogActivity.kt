@@ -58,7 +58,8 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun redirectToPrivacyPolicy() {
-        val url = "https://quasi-art.ru/quasigames/explainarium/privacy-policy"
+        val res: Resources = resources
+        val url = res.getString(R.string.action_privacy_policy_uri)
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
@@ -67,7 +68,7 @@ class CatalogActivity : AppCompatActivity() {
     private fun getCatalogFromFile(): Catalog {
         println("Explainarium: reading catalog.json")
         val catalogFilename = if (isDev) "catalog_dev.json" else "catalog.json"
-        val catalogDataJSON = getAssetsFileContent(this, catalogFilename)
+        val catalogDataJSON = getAssetsFileContent(this, "catalog/$catalogFilename")
 
         val builder = GsonBuilder()
         val gson = builder.create()
@@ -75,22 +76,23 @@ class CatalogActivity : AppCompatActivity() {
         return gson.fromJson(catalogDataJSON, Catalog::class.java)
     }
 
-    private fun getAssetsFilenames(): Array<String> {
-        val assetsList: List<Array<String>?> = listOf(resources.assets.list(""))
+    private fun getImagesFilenames(): Array<String> {
+        val catalogImagesPath = "catalog/images"
+        val assetsList: List<Array<String>?> = listOf(resources.assets.list(catalogImagesPath))
+
+        // Выясняем количество файлов в каталоге, чтобы создать массив нужного размера
         var assetsFilesCount = 0
-        assetsList.forEachIndexed{index, filenames ->
-            if (index == 0) {
-                filenames?.forEach { _ ->
-                    assetsFilesCount += 1
-                }
+        assetsList.forEachIndexed{_, filenames ->
+            filenames?.forEach { _ ->
+                assetsFilesCount += 1
             }
         }
+
+        // Заполнение массива именами файлов изображений
         val assetsA = Array(assetsFilesCount){""}
-        assetsList.forEachIndexed{index, filenames ->
-            if (index == 0) {
-                filenames?.forEachIndexed { idx, filename ->
-                    assetsA[idx] = filename
-                }
+        assetsList.forEachIndexed{_, filenames ->
+            filenames?.forEachIndexed { idx, filename ->
+                assetsA[idx] = filename
             }
         }
 
@@ -104,7 +106,7 @@ class CatalogActivity : AppCompatActivity() {
         catalogLayout.removeAllViewsInLayout()
         val preparingIntent = Intent(this, PreparingActivity::class.java)
 
-        val assetsA = getAssetsFilenames()
+        val catalogImagesFilenames = getImagesFilenames()
 
         val subjectCardLayoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -136,8 +138,8 @@ class CatalogActivity : AppCompatActivity() {
             }
 
             // Изображение
-            val imageFilename = "catalog_${subject.id}.png"
-            if (assetsA.contains(imageFilename)) {
+            val imageFilename = "catalog/images/${subject.id}.png"
+            if (catalogImagesFilenames.contains("${subject.id}.png")) {
                 val subjectImage = ImageView(this)
                 val ims: InputStream = assets.open( imageFilename)
                 val d = Drawable.createFromStream(ims, null)

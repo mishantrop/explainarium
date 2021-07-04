@@ -11,6 +11,7 @@
     <string name="preparing_go">Погнали</string>
 
     <string name="action_privacy_policy">Политика конфиденциальности</string>
+    <string name="action_privacy_policy_uri">Политика конфиденциальности</string>
 
     <!-- -
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.

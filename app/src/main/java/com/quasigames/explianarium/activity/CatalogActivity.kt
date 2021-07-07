@@ -107,6 +107,7 @@ class CatalogActivity : AppCompatActivity() {
         val preparingIntent = Intent(this, PreparingActivity::class.java)
 
         val catalogImagesFilenames = getImagesFilenames()
+        val isComplexityVisible = false
 
         val subjectCardLayoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -115,9 +116,12 @@ class CatalogActivity : AppCompatActivity() {
         subjectCardLayoutParams.bottomMargin = 20
 
         subjects?.forEach { subject ->
+            val res: Resources = resources
+
             val subjectCard = LinearLayout(this)
             val subjectButton = Button(this)
             val subjectComplexity = TextView(this)
+            val subjectWordsCount = TextView(this)
 
             // Кнопка
             subjectButton.text = subject.title
@@ -139,7 +143,8 @@ class CatalogActivity : AppCompatActivity() {
 
             // Изображение
             val imageFilename = "catalog/images/${subject.id}.png"
-            if (catalogImagesFilenames.contains("${subject.id}.png")) {
+            val isImageExists = catalogImagesFilenames.contains("${subject.id}.png")
+            if (isImageExists) {
                 val subjectImage = ImageView(this)
                 val ims: InputStream = assets.open( imageFilename)
                 val d = Drawable.createFromStream(ims, null)
@@ -160,16 +165,24 @@ class CatalogActivity : AppCompatActivity() {
                     "\uD83C\uDF1A\uD83C\uDF1A\uD83C\uDF1A"
                 }
             }
-            val res: Resources = resources
-//            subjectComplexity.text = "Сложность: $complexityEmoji"
+            subjectComplexity.text = "Сложность: $complexityEmoji"
             subjectComplexity.text = String.format(res.getString(R.string.catalog_subject_complexity), complexityEmoji)
             subjectComplexity.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
+            // Количество слов
+            subjectWordsCount.text = String.format(res.getString(R.string.catalog_subject_wordscount), subject.words.size)
+            subjectWordsCount.textAlignment = View.TEXT_ALIGNMENT_CENTER
+
             // Собираем всё вместе
-            subjectCard.addView(subjectComplexity)
+            if (isComplexityVisible) {
+                subjectCard.addView(subjectComplexity)
+            }
+            subjectCard.addView(subjectWordsCount)
             subjectCard.addView(subjectButton)
 
-            catalogLayout.addView(subjectCard)
+            if (isImageExists) {
+                catalogLayout.addView(subjectCard)
+            }
         }
     }
 

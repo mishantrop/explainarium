@@ -35,14 +35,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun getWordsFormSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
-        val wordsJSON = savedInstanceState.getString("words")
-        if (wordsJSON != null) {
-            builder = GsonBuilder()
-            val gson = builder?.create()
-            if (gson != null) {
-                val wordsType = object : TypeToken<List<String>>() {}.type
-                return gson.fromJson(wordsJSON, wordsType)
-            }
+        val wordsJSON = savedInstanceState.getString("words", "")
+        builder = GsonBuilder()
+        val gson = builder?.create()
+        if (gson != null) {
+            val wordsType = object : TypeToken<List<String>>() {}.type
+            return gson.fromJson(wordsJSON, wordsType)
         }
         return mutableListOf()
     }
@@ -182,11 +180,22 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun finishGame() {
-        val builder = GsonBuilder()
-        val gson = builder.create()
+        var ugadano = 0
+        var neugadano = 0
+
+        wordsStat?.forEach { isUgadano ->
+            if (isUgadano.value == true) {
+                ugadano += 1
+            }
+            if (isUgadano.value == false) {
+                neugadano += 1
+            }
+        }
 
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
-        gameSummaryIntent.putExtra("subject", gson.toJson("Hello"))
+
+        gameSummaryIntent.putExtra("ugadano", ugadano)
+        gameSummaryIntent.putExtra("neugadano", neugadano)
         startActivity(gameSummaryIntent)
     }
 

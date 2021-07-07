@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.quasigames.explainarium.R
 import kotlinx.android.synthetic.main.activity_preparing.*
 
-
 class PreparingActivity : AppCompatActivity() {
     private var timer: CountDownTimer? = null
     private val initialTimerValueSecs: Long = 3

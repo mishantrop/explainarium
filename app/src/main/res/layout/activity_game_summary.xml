@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLight"
-    tools:context="com.quasigames.explianarium.activity.GameSummaryActivity">
+    tools:context="com.quasigames.explainarium.activity.GameSummaryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,6 +18,7 @@
             android:id="@+id/game_summary_normalno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
             android:text="@string/game_summary_normalno"
@@ -29,6 +30,7 @@
             android:id="@+id/game_summary_ugadano"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@string/game_summary_ugadano"
@@ -40,6 +42,7 @@
             android:id="@+id/game_summary_neugadano"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="32dp"
             android:text="@string/game_summary_neugadano"

@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLight"
-    tools:context="com.quasigames.explianarium.activity.PreparingActivity">
+    tools:context="com.quasigames.explainarium.activity.PreparingActivity">
 
     <TextView
         android:id="@+id/prepare_counter_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal|center_vertical"
         android:text="3"
-        android:textAlignment="center"
+        android:textAlignment="gravity"
         android:textColor="@color/text"
         android:textSize="64sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

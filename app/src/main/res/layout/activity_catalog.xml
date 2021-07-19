@@ -7,12 +7,45 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundLight"
     android:screenOrientation="portrait"
-    tools:context="com.quasigames.explianarium.activity.CatalogActivity">
+    tools:context="com.quasigames.explainarium.activity.CatalogActivity">
 
-    <LinearLayout
-        android:id="@+id/catalog"
+    <ScrollView
+        android:id="@+id/catalog_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="1dp" />
+        android:layout_height="match_parent">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/catalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8sp"
+            android:paddingTop="8sp"
+            android:paddingRight="8sp"
+            android:paddingBottom="8sp"
+            app:columnCount="2"
+            app:columnOrderPreserved="false">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_columnWeight="1" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_columnWeight="1" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_columnWeight="1" />
+        </androidx.gridlayout.widget.GridLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

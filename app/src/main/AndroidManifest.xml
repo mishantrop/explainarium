@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.quasigames.explainarium"
-    xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.quasigames.explainarium">
+
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove" />
 
     <application
+        android:name=".Explainarium"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name="com.quasigames.explianarium.activity.CatalogActivity"></activity>
-        <activity android:name="com.quasigames.explianarium.activity.GameSummaryActivity" />
-        <activity android:name="com.quasigames.explianarium.activity.GameActivity" />
-        <activity android:name="com.quasigames.explianarium.activity.PreparingActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.CatalogActivity" />
+        <activity android:name=".activity.GameSummaryActivity" />
+        <activity android:name=".activity.GameActivity" />
+        <activity android:name=".activity.PreparingActivity" />
+        <activity android:name=".com.quasigames.explainarium.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,13 +6,18 @@
     <string name="game_time_is_over">⏰ Время истекло</string>
     <string name="game_summary_normalno">👍 Ну и норм</string>
     <string name="game_summary_ugadano">✅ Угадано: %1$s</string>
-    <string name="game_summary_neugadano">❌ Не угадано: %1$s</string>
+    <string name="game_summary_neugadano">❌ Пропущено: %1$s</string>
     <string name="game_summary_goto_catalog">В начало</string>
     <string name="game_initial_timer">00:00</string>
-    <string name="game_correct">✅ Верно</string>
-    <string name="game_incorrect">❌ Неверно</string>
+    <string name="game_correct">✅ Угадано</string>
+    <string name="game_incorrect">❌ Пропуск</string>
     <string name="preparing_go">Погнали</string>
 
+    <string name="action_about">Об игре</string>
+    <string name="about_title">Объясняриум</string>
+    <string name="about_version_code">Сборка: %1$s</string>
+    <string name="about_build_type">Тип: %1$s</string>
+    <string name="about_version_name">Версия: %1$s</string>
     <string name="action_privacy_policy">Политика конфиденциальности</string>
     <string name="action_privacy_policy_uri">Политика конфиденциальности</string>
 

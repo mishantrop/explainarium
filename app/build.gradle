@@ -10,8 +10,8 @@ android {
         applicationId "com.quasigames.explainarium"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
-        versionName "1.1"
+        versionCode 8
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,7 +30,6 @@ android {
             }
         }
     }
-
 }
 
 dependencies {
@@ -46,4 +45,5 @@ dependencies {
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 //    implementation 'com.google.android.ads:mediation-test-suite:2.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.yandex.android:mobmetricalib:3.21.0'
 }

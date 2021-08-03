@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.activity_game.*
 class GameActivity : AppCompatActivity() {
     private var builder: GsonBuilder? = null
     private var currentWordIdx = 0
-    private var lifetime: Long = 120_000
+    private var lifetime: Long = 10_000
+//    private var lifetime: Long = 120_000
     private var timer: CountDownTimer? = null
     private var words: MutableList<String> = mutableListOf()
     private var wordsStat: MutableMap<String?, Boolean?>? = null
@@ -186,7 +187,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
-
+        gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         gameSummaryIntent.putExtra("ugadano", ugadano)
         gameSummaryIntent.putExtra("neugadano", neugadano)
         startActivity(gameSummaryIntent)
@@ -227,15 +228,15 @@ class GameActivity : AppCompatActivity() {
         timer?.cancel()
     }
 
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        val catalogIntent = Intent(this, CatalogActivity::class.java)
-//        startActivity(catalogIntent)
-//    }
-
-    override fun onBackPressed() {
+    private fun goToCatalog() {
+        timer?.cancel()
         val intent = Intent(this, CatalogActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goToCatalog()
     }
 }

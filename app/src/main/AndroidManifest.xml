@@ -9,13 +9,12 @@
 
     <application
         android:name=".Explainarium"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.CatalogActivity" />
         <activity android:name=".activity.GameSummaryActivity" />
         <activity android:name=".activity.GameActivity" />
@@ -30,7 +29,8 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/application_id_debug" />
+            android:value="@string/application_id_debug"
+        />
     </application>
 
 </manifest>

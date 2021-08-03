@@ -227,9 +227,15 @@ class GameActivity : AppCompatActivity() {
         timer?.cancel()
     }
 
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        val catalogIntent = Intent(this, CatalogActivity::class.java)
+//        startActivity(catalogIntent)
+//    }
+
     override fun onBackPressed() {
-        super.onBackPressed()
-        val catalogIntent = Intent(this, CatalogActivity::class.java)
-        startActivity(catalogIntent)
+        val intent = Intent(this, CatalogActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
     }
 }

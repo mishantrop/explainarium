@@ -19,7 +19,7 @@
     <string name="about_build_type">Тип: %1$s</string>
     <string name="about_version_name">Версия: %1$s</string>
     <string name="action_privacy_policy">Политика конфиденциальности</string>
-    <string name="action_privacy_policy_uri">Политика конфиденциальности</string>
+    <string name="action_privacy_policy_uri">https://quasi-art.ru/quasigames/explainarium/privacy-policy</string>
 
     <!-- -
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.

@@ -14,6 +14,7 @@ import androidx.gridlayout.widget.GridLayout
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.com.quasigames.explainarium.activity.MainActivity
 import com.quasigames.explainarium.entity.Catalog
 import com.quasigames.explainarium.entity.CatalogSubject
 import java.io.BufferedReader
@@ -38,6 +39,12 @@ class CatalogActivity : AppCompatActivity() {
             errorToast.show()
         }
     }
+
+//    override fun onBackPressed() {
+//        val intent = Intent(this, MainActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//        startActivity(intent)
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater

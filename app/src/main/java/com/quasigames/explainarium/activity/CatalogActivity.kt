@@ -39,6 +39,12 @@ class CatalogActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onBackPressed() {
+//        val intent = Intent(this, MainActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//        startActivity(intent)
+//    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
@@ -109,7 +115,7 @@ class CatalogActivity : AppCompatActivity() {
         val res: Resources = resources
         val catalogLayout: GridLayout = findViewById(R.id.catalog)
         catalogLayout.removeAllViewsInLayout()
-        val preparingIntent = Intent(this, PreparingActivity::class.java)
+//        val preparingIntent = Intent(this, PreparingActivity::class.java)
 
         val catalogImagesFilenames = getImagesFilenames()
         val isComplexityVisible = false
@@ -126,7 +132,7 @@ class CatalogActivity : AppCompatActivity() {
             subjectButton.width = 100
             subjectButton.textSize = 11.0F
             subjectButton.setOnClickListener {
-                goToSubject(preparingIntent, gson, subject)
+                goToSubject(gson, subject)
             }
 
             // Карточка
@@ -143,7 +149,7 @@ class CatalogActivity : AppCompatActivity() {
             subjectCard.background = ContextCompat.getDrawable(this, R.drawable.rounded_edge)
             subjectCard.setPadding(0, 0, 0,0)
             subjectCard.setOnClickListener {
-                goToSubject(preparingIntent, gson, subject)
+                goToSubject(gson, subject)
             }
 
             // Изображение
@@ -190,8 +196,10 @@ class CatalogActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToSubject(preparingIntent: Intent, gson: Gson, subject: CatalogSubject) {
+    private fun goToSubject(gson: Gson, subject: CatalogSubject) {
+        val preparingIntent = Intent(this, PreparingActivity::class.java)
         preparingIntent.putExtra("subject", gson.toJson(subject))
+        // preparingIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(preparingIntent)
     }
 

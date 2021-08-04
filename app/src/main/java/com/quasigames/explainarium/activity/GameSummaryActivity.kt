@@ -9,6 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.quasigames.explainarium.R
 
 class GameSummaryActivity : AppCompatActivity() {
+    private fun goToCatalog() {
+        val intent = Intent(this, CatalogActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,17 +33,10 @@ class GameSummaryActivity : AppCompatActivity() {
 
         gotoCatalogButton.setOnClickListener {
             goToCatalog()
-            finish()
         }
     }
 
-    private fun goToCatalog() {
-        val catalogIntent = Intent(this, CatalogActivity::class.java)
-        startActivity(catalogIntent)
-    }
-
     override fun onBackPressed() {
-        super.onBackPressed()
         goToCatalog()
     }
 }

@@ -42,4 +42,15 @@ class PreparingActivity : AppCompatActivity() {
         super.finish()
         timer?.cancel()
     }
+
+    private fun goToCatalog() {
+        val intent = Intent(this, CatalogActivity::class.java)
+         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goToCatalog()
+    }
 }

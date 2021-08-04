@@ -186,7 +186,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
-
+        gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         gameSummaryIntent.putExtra("ugadano", ugadano)
         gameSummaryIntent.putExtra("neugadano", neugadano)
         startActivity(gameSummaryIntent)
@@ -227,9 +227,15 @@ class GameActivity : AppCompatActivity() {
         timer?.cancel()
     }
 
+    private fun goToCatalog() {
+        timer?.cancel()
+        val intent = Intent(this, CatalogActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
-        val catalogIntent = Intent(this, CatalogActivity::class.java)
-        startActivity(catalogIntent)
+        goToCatalog()
     }
 }

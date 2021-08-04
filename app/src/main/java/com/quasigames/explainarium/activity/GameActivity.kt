@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.activity_game.*
 class GameActivity : AppCompatActivity() {
     private var builder: GsonBuilder? = null
     private var currentWordIdx = 0
-    private var lifetime: Long = 10_000
-//    private var lifetime: Long = 120_000
+    private var lifetime: Long = 120_000
     private var timer: CountDownTimer? = null
     private var words: MutableList<String> = mutableListOf()
     private var wordsStat: MutableMap<String?, Boolean?>? = null

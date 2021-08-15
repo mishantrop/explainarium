@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.CatalogSubject
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -32,6 +33,18 @@ class GameActivity : AppCompatActivity() {
         }
 
         return mutableListOf()
+    }
+
+    private fun getSubjectTitle(subjectJSON: String): String {
+        builder = GsonBuilder()
+        val gson = builder?.create()
+        val subjectInstance = gson?.fromJson(subjectJSON, CatalogSubject::class.java)
+
+        if (subjectInstance != null) {
+            return subjectInstance.title
+        }
+
+        return ""
     }
 
     private fun getWordsFormSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
@@ -107,6 +120,10 @@ class GameActivity : AppCompatActivity() {
                 override fun onFinish() {
                     game_timer.text = getString(R.string.game_time_is_over)
 
+                    val eventParameters: HashMap<String, Any> = HashMap()
+                    eventParameters["reason"] = "timer"
+                    AppMetrikaSingleton.reportEvent(applicationContext, "Game/Finish", eventParameters)
+
                     finishGame()
                 }
             }.start()
@@ -168,6 +185,10 @@ class GameActivity : AppCompatActivity() {
             currentWordIdx += 1
             render()
         } else {
+            val eventParameters: HashMap<String, Any> = HashMap()
+            eventParameters["reason"] = "words"
+            AppMetrikaSingleton.reportEvent(applicationContext, "Game/Finish", eventParameters)
+
             finishGame()
         }
     }
@@ -229,6 +250,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun goToCatalog() {
         timer?.cancel()
+        AppMetrikaSingleton.reportEvent(applicationContext, "Game/GoToCatalog", HashMap())
         val intent = Intent(this, CatalogActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
@@ -236,6 +258,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        AppMetrikaSingleton.reportEvent(applicationContext, "Game/BackPressed", HashMap())
         goToCatalog()
     }
 }

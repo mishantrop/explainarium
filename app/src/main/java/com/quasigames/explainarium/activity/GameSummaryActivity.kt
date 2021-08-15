@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.entity.AppMetrikaSingleton
 
 class GameSummaryActivity : AppCompatActivity() {
     private fun goToCatalog() {
@@ -34,6 +35,8 @@ class GameSummaryActivity : AppCompatActivity() {
         gotoCatalogButton.setOnClickListener {
             goToCatalog()
         }
+
+        AppMetrikaSingleton.reportEvent(applicationContext, "Game/Summary", HashMap())
     }
 
     override fun onBackPressed() {

@@ -45,7 +45,7 @@ class PreparingActivity : AppCompatActivity() {
 
     private fun goToCatalog() {
         val intent = Intent(this, CatalogActivity::class.java)
-         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
     }
 

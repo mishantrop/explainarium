@@ -2,6 +2,7 @@ package com.quasigames.explainarium.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -14,6 +15,7 @@ import androidx.gridlayout.widget.GridLayout
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.Catalog
 import com.quasigames.explainarium.entity.CatalogSubject
 import java.io.BufferedReader
@@ -39,12 +41,6 @@ class CatalogActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onBackPressed() {
-//        val intent = Intent(this, MainActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//        startActivity(intent)
-//    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
@@ -55,6 +51,7 @@ class CatalogActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_privacy_policy -> {
+                AppMetrikaSingleton.reportEvent(applicationContext, "Catalog/PrivacyPolicy", HashMap())
                 redirectToPrivacyPolicy()
                 true
             }
@@ -76,7 +73,6 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun getCatalogFromFile(): Catalog {
-        println("Explainarium: reading catalog.json")
         val catalogFilename = "catalog.json"
         val catalogDataJSON = getAssetsFileContent(this, "catalog/$catalogFilename")
 
@@ -110,12 +106,18 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun buildCatalogViews(subjects: Collection<CatalogSubject>?) {
+        val orientation = this.resources.configuration.orientation
+
         val builder = GsonBuilder()
         val gson = builder.create()
         val res: Resources = resources
         val catalogLayout: GridLayout = findViewById(R.id.catalog)
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            catalogLayout.columnCount = 2
+        } else {
+            catalogLayout.columnCount = 3
+        }
         catalogLayout.removeAllViewsInLayout()
-//        val preparingIntent = Intent(this, PreparingActivity::class.java)
 
         val catalogImagesFilenames = getImagesFilenames()
         val isComplexityVisible = false
@@ -145,7 +147,6 @@ class CatalogActivity : AppCompatActivity() {
             subjectCardLayoutParams.leftMargin = 10
             subjectCard.layoutParams = subjectCardLayoutParams
             subjectCard.orientation = LinearLayout.VERTICAL
-//            subjectCard.setBackgroundColor(Color.WHITE)
             subjectCard.background = ContextCompat.getDrawable(this, R.drawable.rounded_edge)
             subjectCard.setPadding(0, 0, 0,0)
             subjectCard.setOnClickListener {
@@ -197,9 +198,13 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun goToSubject(gson: Gson, subject: CatalogSubject) {
+        // Отправка события о старте определённой категории
+        val eventParameters: HashMap<String, Any> = HashMap()
+        eventParameters["title"] = subject.title
+        AppMetrikaSingleton.reportEvent(applicationContext, "Game/Start", eventParameters)
+
         val preparingIntent = Intent(this, PreparingActivity::class.java)
         preparingIntent.putExtra("subject", gson.toJson(subject))
-        // preparingIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(preparingIntent)
     }
 

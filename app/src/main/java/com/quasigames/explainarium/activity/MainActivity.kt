@@ -1,4 +1,4 @@
-package com.quasigames.explainarium.com.quasigames.explainarium.activity
+package com.quasigames.explainarium.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.quasigames.explainarium.activity.CatalogActivity
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
         try {
             val catalogIntent = Intent(this, CatalogActivity::class.java)
-//            catalogIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(catalogIntent)
         } catch (error: Exception) {
             println("Explainarium" + error.message)

@@ -3,10 +3,10 @@ package com.quasigames.explainarium.activity
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import com.quasigames.explainarium.BuildConfig
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.entity.AppMetrikaSingleton
 
 class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,5 +22,11 @@ class AboutActivity : AppCompatActivity() {
         textViewVersionCode.text = String.format(res.getString(R.string.about_version_code), BuildConfig.VERSION_CODE)
         textViewBuildType.text = String.format(res.getString(R.string.about_build_type), BuildConfig.BUILD_TYPE)
         textViewVersionName.text = String.format(res.getString(R.string.about_version_name), BuildConfig.VERSION_NAME)
+
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "About",
+            HashMap(),
+        )
     }
 }

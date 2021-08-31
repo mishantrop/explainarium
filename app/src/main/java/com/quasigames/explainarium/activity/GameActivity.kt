@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.quasigames.explainarium.R
+import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.CatalogSubject
 import kotlinx.android.synthetic.main.activity_game.*
 
@@ -20,7 +21,7 @@ class GameActivity : AppCompatActivity() {
     private var wordsStat: MutableMap<String?, Boolean?>? = null
     private var isFirstInitialization = true
 
-    private fun getWordsFromSubject(subjectJSON: String): MutableList<String> {
+    private fun getSubjectWords(subjectJSON: String): MutableList<String> {
         builder = GsonBuilder()
         val gson = builder?.create()
         val subjectInstance = gson?.fromJson(subjectJSON, CatalogSubject::class.java)
@@ -34,7 +35,7 @@ class GameActivity : AppCompatActivity() {
         return mutableListOf()
     }
 
-    private fun getWordsFormSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
+    private fun getWordsFromSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
         val wordsJSON = savedInstanceState.getString("words", "")
         builder = GsonBuilder()
         val gson = builder?.create()
@@ -55,9 +56,9 @@ class GameActivity : AppCompatActivity() {
                 isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
             }
             if (isFirstInitialization) {
-                words = getWordsFromSubject(intent.getStringExtra("subject")!!)
+                words = getSubjectWords(intent.getStringExtra("subject")!!)
             } else if (savedInstanceState != null) {
-                words = getWordsFormSavedInstanceState(savedInstanceState)
+                words = getWordsFromSavedInstanceState(savedInstanceState)
             }
 
             wordsStat = mutableMapOf()
@@ -107,7 +108,7 @@ class GameActivity : AppCompatActivity() {
                 override fun onFinish() {
                     game_timer.text = getString(R.string.game_time_is_over)
 
-                    finishGame()
+                    finishGame("timer")
                 }
             }.start()
         } catch (error: Exception) {
@@ -168,27 +169,45 @@ class GameActivity : AppCompatActivity() {
             currentWordIdx += 1
             render()
         } else {
-            finishGame()
+            finishGame("words")
         }
     }
 
-    private fun finishGame() {
-        var ugadano = 0
-        var neugadano = 0
+    private fun getGuessedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
+        var guessed = 0
 
-        wordsStat?.forEach { isUgadano ->
-            if (isUgadano.value == true) {
-                ugadano += 1
-            }
-            if (isUgadano.value == false) {
-                neugadano += 1
+        wordsStatistics.forEach { isGuessed ->
+            if (isGuessed.value == true) {
+                guessed += 1
             }
         }
 
+        return guessed
+    }
+
+    private fun getSkippedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
+        var skipped = 0
+
+        wordsStatistics.forEach { isGuessed ->
+            if (isGuessed.value == false) {
+                skipped += 1
+            }
+        }
+
+        return skipped
+    }
+
+    private fun finishGame(finishReason: String) {
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
         gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        gameSummaryIntent.putExtra("ugadano", ugadano)
-        gameSummaryIntent.putExtra("neugadano", neugadano)
+
+        val guessedCount = getGuessedCount(wordsStat!!)
+        val skippedCount = getSkippedCount(wordsStat!!)
+
+        gameSummaryIntent.putExtra("guessedCount", guessedCount)
+        gameSummaryIntent.putExtra("skippedCount", skippedCount)
+        gameSummaryIntent.putExtra("finishReason", finishReason)
+
         startActivity(gameSummaryIntent)
     }
 
@@ -229,6 +248,11 @@ class GameActivity : AppCompatActivity() {
 
     private fun goToCatalog() {
         timer?.cancel()
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "Game/GoToCatalog",
+            HashMap(),
+        )
         val intent = Intent(this, CatalogActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
@@ -236,6 +260,11 @@ class GameActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "Game/BackPressed",
+            HashMap(),
+        )
         goToCatalog()
     }
 }

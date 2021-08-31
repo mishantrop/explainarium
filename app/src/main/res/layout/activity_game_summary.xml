@@ -15,7 +15,7 @@
         android:textAlignment="center">
 
         <TextView
-            android:id="@+id/game_summary_normalno"
+            android:id="@+id/game_summary_opinion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -27,25 +27,25 @@
             android:textSize="32sp" />
 
         <TextView
-            android:id="@+id/game_summary_ugadano"
+            android:id="@+id/game_summary_guessed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/game_summary_ugadano"
+            android:text="@string/game_summary_guessed"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/game_summary_neugadano"
+            android:id="@+id/game_summary_skipped"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="32dp"
-            android:text="@string/game_summary_neugadano"
+            android:text="@string/game_summary_skipped"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="24sp" />

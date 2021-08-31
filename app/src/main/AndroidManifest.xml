@@ -20,7 +20,7 @@
         <activity android:name=".activity.GameActivity" />
         <activity android:name=".activity.PreparingActivity" />
         <activity
-            android:name=".com.quasigames.explainarium.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:noHistory="true"
         >
             <intent-filter>

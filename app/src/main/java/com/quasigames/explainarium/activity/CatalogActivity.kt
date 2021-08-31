@@ -51,7 +51,11 @@ class CatalogActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_privacy_policy -> {
-                AppMetrikaSingleton.reportEvent(applicationContext, "Catalog/PrivacyPolicy", HashMap())
+                AppMetrikaSingleton.reportEvent(
+                    applicationContext,
+                    "Catalog/PrivacyPolicy",
+                    HashMap(),
+                )
                 redirectToPrivacyPolicy()
                 true
             }
@@ -199,9 +203,11 @@ class CatalogActivity : AppCompatActivity() {
 
     private fun goToSubject(gson: Gson, subject: CatalogSubject) {
         // Отправка события о старте определённой категории
-        val eventParameters: HashMap<String, Any> = HashMap()
-        eventParameters["title"] = subject.title
-        AppMetrikaSingleton.reportEvent(applicationContext, "Game/Start", eventParameters)
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "Game/Start",
+            hashMapOf("title" to subject.title),
+        )
 
         val preparingIntent = Intent(this, PreparingActivity::class.java)
         preparingIntent.putExtra("subject", gson.toJson(subject))

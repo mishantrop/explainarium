@@ -23,6 +23,10 @@ class AboutActivity : AppCompatActivity() {
         textViewBuildType.text = String.format(res.getString(R.string.about_build_type), BuildConfig.BUILD_TYPE)
         textViewVersionName.text = String.format(res.getString(R.string.about_version_name), BuildConfig.VERSION_NAME)
 
-        AppMetrikaSingleton.reportEvent(applicationContext, "About", HashMap())
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "About",
+            HashMap(),
+        )
     }
 }

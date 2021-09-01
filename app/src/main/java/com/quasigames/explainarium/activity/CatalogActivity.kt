@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -124,12 +125,10 @@ class CatalogActivity : AppCompatActivity() {
         catalogLayout.removeAllViewsInLayout()
 
         val catalogImagesFilenames = getImagesFilenames()
-        val isComplexityVisible = false
 
         subjects?.forEach { subject ->
             val subjectCard = LinearLayout(this)
             val subjectButton = Button(this)
-            val subjectComplexity = TextView(this)
             val subjectWordsCount = TextView(this)
 
             // Кнопка
@@ -140,6 +139,7 @@ class CatalogActivity : AppCompatActivity() {
             subjectButton.setOnClickListener {
                 goToSubject(gson, subject)
             }
+            subjectButton.background = ContextCompat.getDrawable(this, R.color.cardBackgroundLight)
 
             // Карточка
             val subjectCardLayoutParams: GridLayout.LayoutParams = GridLayout.LayoutParams()
@@ -172,26 +172,11 @@ class CatalogActivity : AppCompatActivity() {
                 subjectCard.addView(subjectImage)
             }
 
-            // Сложность
-            val complexityEmoji = when (subject.complexity) {
-                1 -> "\uD83C\uDF1D\uD83C\uDF1A\uD83C\uDF1A"
-                2 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1A"
-                3 -> "\uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D"
-                else -> {
-                    "\uD83C\uDF1A\uD83C\uDF1A\uD83C\uDF1A"
-                }
-            }
-            subjectComplexity.text = String.format(res.getString(R.string.catalog_subject_complexity), complexityEmoji)
-            subjectComplexity.gravity = Gravity.CENTER_HORIZONTAL
-
             // Количество слов
             subjectWordsCount.text = String.format(res.getString(R.string.catalog_subject_wordscount), subject.words.size)
             subjectWordsCount.gravity = Gravity.CENTER_HORIZONTAL
 
             // Собираем всё вместе
-            if (isComplexityVisible) {
-                subjectCard.addView(subjectComplexity)
-            }
             subjectCard.addView(subjectWordsCount)
             subjectCard.addView(subjectButton)
 

@@ -1,6 +1,7 @@
 package com.quasigames.explainarium.activity
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateUtils
@@ -92,6 +93,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun initTimer(value: Long) {
         val countDownInterval: Long = 100
+        val res: Resources = resources
+
         try {
             timer?.cancel()
             timer = object : CountDownTimer(value, countDownInterval) {
@@ -101,7 +104,10 @@ class GameActivity : AppCompatActivity() {
                     if (millisUntilFinished <= 0) {
                         game_timer.text = getString(R.string.game_time_is_over)
                     } else {
-                        game_timer.text = formatTime(millisUntilFinished / 1000)
+                        game_timer.text = String.format(
+                            res.getString(R.string.game_time),
+                            formatTime(millisUntilFinished / 1000)
+                        )
                     }
                 }
 

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Объясняриум</string>
 
-    <string name="catalog_subject_complexity">Сложность: %1$s</string>
     <string name="catalog_subject_wordscount">Слов: %1$s</string>
-    <string name="game_time_is_over">⏰ Время истекло</string>
+    <string name="game_time_is_over">⌛ Время истекло</string>
+    <string name="game_time">⏳ %1$s</string>
     <string name="game_summary_zero_guessed_and_skipped">😐 Ясно</string>
     <string name="game_summary_normalno">👍 Ну и норм</string>
     <string name="game_summary_guessed">✅ Угадано: %1$s</string>

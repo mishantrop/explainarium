@@ -1,10 +1,10 @@
 package com.quasigames.explainarium.activity
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -13,12 +13,19 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.gridlayout.widget.GridLayout
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.quasigames.explainarium.BuildConfig
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
+import com.quasigames.explainarium.entity.UpdaterSingleton
 import com.quasigames.explainarium.entity.Catalog
 import com.quasigames.explainarium.entity.CatalogSubject
+import com.quasigames.explainarium.entity.UpdateInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStream
 
@@ -35,10 +42,41 @@ class CatalogActivity : AppCompatActivity() {
             val catalog = getCatalogFromFile()
 
             buildCatalogViews(catalog.subjects)
+
+            if (UpdaterSingleton.isEnabled()) {
+                checkUpdates()
+            }
         } catch (error: Exception) {
             println("Explainarium: " + error.message)
-            val errorToast = Toast.makeText(this, error.message, Toast.LENGTH_LONG)
-            errorToast.show()
+            Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun checkUpdates() {
+        val res: Resources = resources
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val responseText = UpdaterSingleton.fetchUpdateInfo(res.getString(R.string.update_uri))
+            withContext(Dispatchers.Main) {
+                val builder = GsonBuilder()
+                val gson = builder.create()
+
+                val updateInfo = gson.fromJson(responseText, UpdateInfo::class.java)
+
+                if (UpdaterSingleton.isUpdateRequired(updateInfo)) {
+                    val updateNotification: LinearLayout = findViewById(R.id.update_notification)
+                    val updateNotificationButton: Button = findViewById(R.id.update_button)
+                    updateNotification.visibility = View.VISIBLE
+
+                    updateNotificationButton.setOnClickListener {
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        }
+                    }
+                }
+            }
         }
     }
 

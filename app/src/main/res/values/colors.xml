@@ -6,4 +6,5 @@
     <color name="textSecondary">#4F142E</color>
     <color name="backgroundLight">#4296A8</color>
     <color name="cardBackgroundLight">#eeeeee</color>
+    <color name="textInverted">#eeeeee</color>
 </resources>

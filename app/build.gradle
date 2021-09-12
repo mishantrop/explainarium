@@ -10,8 +10,8 @@ android {
         applicationId "com.quasigames.explainarium"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 12
-        versionName "1.6"
+        versionCode 13
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,4 +46,7 @@ dependencies {
 //    implementation 'com.google.android.ads:mediation-test-suite:2.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.yandex.android:mobmetricalib:3.21.0'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 }

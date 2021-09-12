@@ -6,6 +6,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
+// TODO Handle errors
 object UpdaterSingleton {
     fun isEnabled(): Boolean {
          return BuildConfig.BUILD_TYPE == "release"

@@ -10,8 +10,8 @@ android {
         applicationId "com.quasigames.explainarium"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 12
-        versionName "1.6"
+        versionCode 13
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

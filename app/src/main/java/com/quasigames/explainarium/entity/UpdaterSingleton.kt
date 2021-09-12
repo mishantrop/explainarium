@@ -15,12 +15,12 @@ object UpdaterSingleton {
         return updateInfo.VERSION_CODE > BuildConfig.VERSION_CODE
     }
 
-    fun fetchUpdateInfo(myURL: String): String {
+    fun fetchUpdateInfo(updateInfoUri: String): String {
         val inputStream: InputStream
         var result = ""
 
         try {
-            val url = URL(myURL)
+            val url = URL(updateInfoUri)
             val conn = url.openConnection() as HttpURLConnection
 
             conn.setRequestProperty("Accept-Encoding", "identity") // TODO try gzip

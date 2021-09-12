@@ -63,7 +63,7 @@ class CatalogActivity : AppCompatActivity() {
 
                 val updateInfo = gson.fromJson(responseText, UpdateInfo::class.java)
 
-                if (updateInfo.VERSION_CODE > BuildConfig.VERSION_CODE) {
+                if (UpdaterSingleton.isUpdateRequired(updateInfo)) {
                     val updateNotification: LinearLayout = findViewById(R.id.update_notification)
                     val updateNotificationButton: Button = findViewById(R.id.update_button)
                     updateNotification.visibility = View.VISIBLE

@@ -11,6 +11,10 @@ object UpdaterSingleton {
          return BuildConfig.BUILD_TYPE == "release"
     }
 
+    fun isUpdateRequired(updateInfo: UpdateInfo): Boolean {
+        return updateInfo.VERSION_CODE > BuildConfig.VERSION_CODE
+    }
+
     fun fetchUpdateInfo(myURL: String): String {
         val inputStream: InputStream
         var result = ""

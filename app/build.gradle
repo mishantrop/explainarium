@@ -45,10 +45,8 @@ dependencies {
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 //    implementation 'com.google.android.ads:mediation-test-suite:2.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
-//    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.yandex.android:mobmetricalib:3.21.0'
 
-//    implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 }

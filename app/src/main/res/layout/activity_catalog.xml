@@ -9,44 +9,78 @@
     android:screenOrientation="portrait"
     tools:context="com.quasigames.explainarium.activity.CatalogActivity">
 
-    <ScrollView
-        android:id="@+id/catalog_scrollview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/catalog"
+        <ScrollView
+            android:id="@+id/catalog_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8sp"
-            android:paddingTop="8sp"
-            android:paddingRight="8sp"
-            android:paddingBottom="8sp"
-            app:columnCount="2"
-            app:columnOrderPreserved="false">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <Button
-                android:id="@+id/button"
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/catalog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8sp"
+                android:paddingTop="8sp"
+                android:paddingRight="8sp"
+                android:paddingBottom="8sp"
+                app:columnCount="2"
+                app:columnOrderPreserved="false">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cardBackgroundLight"
+                    android:text="Button"
+                    app:layout_columnWeight="1" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button"
+                    app:layout_columnWeight="1" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button"
+                    app:layout_columnWeight="1" />
+            </androidx.gridlayout.widget.GridLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/update_notification"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:paddingLeft="18sp"
+            android:paddingTop="4sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="4sp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/update_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/cardBackgroundLight"
-                android:text="Button"
-                app:layout_columnWeight="1" />
+                android:layout_weight="1"
+                android:text="@string/update_text"
+                android:textColor="@color/textInverted" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/update_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                app:layout_columnWeight="1" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                app:layout_columnWeight="1" />
-        </androidx.gridlayout.widget.GridLayout>
-    </ScrollView>
+                android:layout_weight="1"
+                android:text="@string/update_button" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

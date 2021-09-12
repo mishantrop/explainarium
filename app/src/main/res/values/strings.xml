@@ -14,6 +14,10 @@
     <string name="game_incorrect">❌ Пропуск</string>
     <string name="preparing_go">Погнали</string>
 
+    <string name="update_uri">https://quasi-art.ru/quasigames/explainarium/update-info.json</string>
+    <string name="update_text">Доступно обновление</string>
+    <string name="update_button">🔥 Обновить</string>
+
     <string name="action_about">Об игре</string>
     <string name="about_title">Объясняриум</string>
     <string name="about_version_code">Сборка: %1$s</string>

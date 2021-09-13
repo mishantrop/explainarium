@@ -16,6 +16,7 @@ import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.quasigames.explainarium.BuildConfig
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.UpdaterSingleton

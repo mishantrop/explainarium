@@ -10,8 +10,13 @@
     {
       "type": "SINGLE",
       "filters": [],
+<<<<<<< HEAD
       "versionCode": 14,
       "versionName": "1.8",
+=======
+      "versionCode": 13,
+      "versionName": "1.7",
+>>>>>>> 590af66c591044fcb53e4472ea8624e87272d252
       "outputFile": "app-release.apk"
     }
   ]

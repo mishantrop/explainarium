@@ -16,13 +16,11 @@ import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.quasigames.explainarium.BuildConfig
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.UpdaterSingleton
 import com.quasigames.explainarium.entity.Catalog
 import com.quasigames.explainarium.entity.CatalogSubject
-import com.quasigames.explainarium.entity.UpdateInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,25 +55,34 @@ class CatalogActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             val responseText = UpdaterSingleton.fetchUpdateInfo(res.getString(R.string.update_uri))
+
             withContext(Dispatchers.Main) {
-                val builder = GsonBuilder()
-                val gson = builder.create()
+                processUpdateInfoResponse(responseText)
+            }
+        }
+    }
 
-                val updateInfo = gson.fromJson(responseText, UpdateInfo::class.java)
+    private fun processUpdateInfoResponse(responseText: String) {
+        if (!UpdaterSingleton.isValidResponse(responseText)) {
+            return
+        }
+        val updateInfo = UpdaterSingleton.getUpdateInfoObject(responseText)
 
-                if (UpdaterSingleton.isUpdateRequired(updateInfo)) {
-                    val updateNotification: LinearLayout = findViewById(R.id.update_notification)
-                    val updateNotificationButton: Button = findViewById(R.id.update_button)
-                    updateNotification.visibility = View.VISIBLE
+        if (UpdaterSingleton.isUpdateAvailable(updateInfo)) {
+            try {
+                val updateNotification: LinearLayout = findViewById(R.id.update_notification)
+                val updateNotificationButton: Button = findViewById(R.id.update_button)
+                updateNotification.visibility = View.VISIBLE
 
-                    updateNotificationButton.setOnClickListener {
-                        try {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                        } catch (e: ActivityNotFoundException) {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                        }
+                updateNotificationButton.setOnClickListener {
+                    try {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                    } catch (e: ActivityNotFoundException) {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
                     }
                 }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
     }

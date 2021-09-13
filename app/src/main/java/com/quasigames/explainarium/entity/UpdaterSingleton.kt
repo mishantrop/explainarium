@@ -1,43 +1,77 @@
 package com.quasigames.explainarium.entity
 
+import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.BuildConfig
 import java.io.BufferedReader
 import java.io.InputStream
+import java.net.ConnectException
 import java.net.HttpURLConnection
 import java.net.URL
 
-// TODO Handle errors
 object UpdaterSingleton {
     fun isEnabled(): Boolean {
          return BuildConfig.BUILD_TYPE == "release"
     }
 
-    fun isUpdateRequired(updateInfo: UpdateInfo): Boolean {
+    fun isUpdateAvailable(updateInfo: UpdateInfo): Boolean {
         return updateInfo.VERSION_CODE > BuildConfig.VERSION_CODE
+    }
+
+    fun isValidResponse(responseText: String): Boolean {
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        var isValid = false
+
+        try {
+            val updateInfo = gson.fromJson(responseText, UpdateInfo::class.java)
+            isValid = updateInfo.VERSION_CODE > 0
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+
+        return isValid
+    }
+
+    fun getUpdateInfoObject(responseText: String): UpdateInfo {
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        var updateInfo = UpdateInfo()
+
+        try {
+            updateInfo = gson.fromJson(responseText, UpdateInfo::class.java)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+
+        return updateInfo
     }
 
     fun fetchUpdateInfo(updateInfoUri: String): String {
         val inputStream: InputStream
         var result = ""
+        var connection: HttpURLConnection? = null
+        var reader: BufferedReader? = null
 
         try {
             val url = URL(updateInfoUri)
-            val conn = url.openConnection() as HttpURLConnection
+            connection = url.openConnection() as HttpURLConnection
 
-            conn.setRequestProperty("Accept-Encoding", "identity") // TODO try gzip
+            connection.setRequestProperty("Accept-Encoding", "identity")
 
-            conn.setRequestProperty("Accept-Charset", "utf-8")
-            conn.setRequestProperty("Accept", "application/json")
+            connection.setRequestProperty("Accept-Charset", "utf-8")
+            connection.setRequestProperty("Accept", "application/json")
 
-            conn.connect()
+            connection.connect()
 
-            inputStream = conn.inputStream
+            inputStream = connection.inputStream
 
-            val reader = BufferedReader(inputStream.reader())
+            reader = BufferedReader(inputStream.reader())
             result = reader.readText()
-            reader.close()
-        } catch(err:Error) {
-            print("Error when executing get request: "+err.localizedMessage)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        } finally {
+            connection?.disconnect()
+            reader?.close()
         }
 
         return result

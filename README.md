@@ -10,4 +10,3 @@ https://play.google.com/store/apps/details?id=com.quasigames.zapominarium
 ## Roadmap
 * Настройки времени
 * kotlinx.serialization
-* gradle minification

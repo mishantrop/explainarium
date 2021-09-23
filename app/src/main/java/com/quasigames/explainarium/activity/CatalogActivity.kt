@@ -8,15 +8,20 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.Menu
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.quasigames.explainarium.BuildConfig
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.UpdaterSingleton
@@ -32,9 +37,6 @@ class CatalogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         setContentView(R.layout.activity_catalog)
 
         try {
@@ -46,8 +48,12 @@ class CatalogActivity : AppCompatActivity() {
                 checkUpdates()
             }
         } catch (error: Exception) {
-            println("Explainarium: " + error.message)
-            Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+            println("Explainarium | Error: $error")
+            println("Explainarium | Message: " + error.message)
+            println("Explainarium | Cause: " + error.cause)
+            error.stackTrace.forEach {x ->
+                println("Explainarium | Stack: $x")
+            }
         }
     }
 
@@ -245,6 +251,7 @@ class CatalogActivity : AppCompatActivity() {
         startActivity(preparingIntent)
     }
 
+    @Suppress("SameParameterValue")
     private fun getAssetsFileContent(context: Context, fileName: String): String =
         context
             .assets

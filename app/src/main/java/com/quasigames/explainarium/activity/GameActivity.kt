@@ -5,18 +5,19 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateUtils
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.CatalogSubject
-import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
     private var builder: GsonBuilder? = null
     private var currentWordIdx = 0
-    private var lifetime: Long = 120_000
+    private var timerLifetime: Long = 120_000
     private var timer: CountDownTimer? = null
     private var words: MutableList<String> = mutableListOf()
     private var wordsStat: MutableMap<String?, Boolean?>? = null
@@ -52,6 +53,8 @@ class GameActivity : AppCompatActivity() {
 
         try {
             setContentView(R.layout.activity_game)
+            val guessWordButton: Button = findViewById(R.id.game_correct)
+            val skipWordButton: Button = findViewById(R.id.game_incorrect)
 
             if (savedInstanceState != null) {
                 isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
@@ -66,21 +69,13 @@ class GameActivity : AppCompatActivity() {
 
             render()
 
-            game_correct.setOnClickListener {
-                val word = getCurrentWord()
-                wordsStat!![word] = true
-                words[currentWordIdx] = ""
-                setNextWord()
+            guessWordButton.setOnClickListener {
+                handleWordAction(true)
             }
 
-            game_incorrect.setOnClickListener {
-                val word = getCurrentWord()
-                wordsStat!![word] = false
-                words[currentWordIdx] = ""
-                setNextWord()
+            skipWordButton.setOnClickListener {
+                handleWordAction(false)
             }
-
-            initTimer(lifetime)
         } catch (error: Exception) {
             println("Explainarium | Error: $error")
             println("Explainarium | Message: " + error.message)
@@ -91,20 +86,141 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "Game/BackPressed",
+            HashMap(),
+        )
+        goToCatalog()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        builder = GsonBuilder()
+        val gson = builder?.create()
+
+        outState.run {
+            outState.putBoolean("isFirstInitialization", false)
+            outState.putLong("timerLifetime", timerLifetime)
+            val wordsToSave = words.filter { word -> word !== "" }
+            if (gson != null) {
+                outState.putString("words", gson.toJson(wordsToSave))
+            }
+        }
+
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        timerLifetime = savedInstanceState.getLong("timerLifetime")
+        isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
+
+        initTimer(timerLifetime)
+    }
+
+    override fun finish() {
+        super.finish()
+        timer?.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initTimer(timerLifetime)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer?.cancel()
+    }
+
+    private fun finishGame(finishReason: String) {
+        val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
+        gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+
+        val guessedCount = getGuessedCount(wordsStat!!)
+        val skippedCount = getSkippedCount(wordsStat!!)
+
+        gameSummaryIntent.putExtra("guessedCount", guessedCount)
+        gameSummaryIntent.putExtra("skippedCount", skippedCount)
+        gameSummaryIntent.putExtra("finishReason", finishReason)
+
+        startActivity(gameSummaryIntent)
+    }
+
+    private fun formatTime(totalSecs: Long): String {
+        return DateUtils.formatElapsedTime(totalSecs)
+    }
+
+    private fun getCurrentWord(): String {
+        if (words.size > currentWordIdx) {
+            return words.elementAt(currentWordIdx)
+        }
+
+        return ":("
+    }
+
+    private fun getGuessedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
+        var guessed = 0
+
+        wordsStatistics.forEach { isGuessed ->
+            if (isGuessed.value == true) {
+                guessed += 1
+            }
+        }
+
+        return guessed
+    }
+
+    private fun getSkippedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
+        var skipped = 0
+
+        wordsStatistics.forEach { isGuessed ->
+            if (isGuessed.value == false) {
+                skipped += 1
+            }
+        }
+
+        return skipped
+    }
+
+    private fun goToCatalog() {
+        timer?.cancel()
+        AppMetrikaSingleton.reportEvent(
+            applicationContext,
+            "Game/GoToCatalog",
+            HashMap(),
+        )
+        val intent = Intent(this, CatalogActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+    }
+
+    private fun handleWordAction(isGuessed: Boolean) {
+        val word = getCurrentWord()
+        wordsStat!![word] = isGuessed
+        // Типа удаление слова из текущего списка, чтобы оно не повторялось при пересоздании Activity
+        words[currentWordIdx] = ""
+        setNextWord()
+    }
+
     private fun initTimer(value: Long) {
         val countDownInterval: Long = 100
         val res: Resources = resources
 
+        val gameTimerTextView: TextView = findViewById(R.id.game_timer)
+
         try {
-            timer?.cancel()
             timer = object : CountDownTimer(value, countDownInterval) {
                 override fun onTick(millisUntilFinished: Long) {
-                    lifetime -= countDownInterval
+                    timerLifetime -= countDownInterval
 
                     if (millisUntilFinished <= 0) {
-                        game_timer.text = getString(R.string.game_time_is_over)
+                        gameTimerTextView.text = getString(R.string.game_time_is_over)
                     } else {
-                        game_timer.text = String.format(
+                        gameTimerTextView.text = String.format(
                             res.getString(R.string.game_time),
                             formatTime(millisUntilFinished / 1000)
                         )
@@ -112,7 +228,7 @@ class GameActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    game_timer.text = getString(R.string.game_time_is_over)
+                    gameTimerTextView.text = getString(R.string.game_time_is_over)
 
                     finishGame("timer")
                 }
@@ -127,17 +243,9 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCurrentWord(): String {
-        if (words.size > currentWordIdx) {
-            return words.elementAt(currentWordIdx)
-        }
-
-        return ":("
-    }
-
     private fun render() {
         val currentWord = getCurrentWord()
-
+        val gameCurrentWordTextView: TextView = findViewById(R.id.game_current_word)
         val fontSize = when (currentWord.length) {
             1 -> 64.0F
             2 -> 64.0F
@@ -166,8 +274,8 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        game_current_word.text = currentWord
-        game_current_word.textSize = fontSize
+        gameCurrentWordTextView.text = currentWord
+        gameCurrentWordTextView.textSize = fontSize
     }
 
     private fun setNextWord() {
@@ -179,98 +287,5 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun getGuessedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
-        var guessed = 0
 
-        wordsStatistics.forEach { isGuessed ->
-            if (isGuessed.value == true) {
-                guessed += 1
-            }
-        }
-
-        return guessed
-    }
-
-    private fun getSkippedCount(wordsStatistics: MutableMap<String?, Boolean?>): Int {
-        var skipped = 0
-
-        wordsStatistics.forEach { isGuessed ->
-            if (isGuessed.value == false) {
-                skipped += 1
-            }
-        }
-
-        return skipped
-    }
-
-    private fun finishGame(finishReason: String) {
-        val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
-        gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-
-        val guessedCount = getGuessedCount(wordsStat!!)
-        val skippedCount = getSkippedCount(wordsStat!!)
-
-        gameSummaryIntent.putExtra("guessedCount", guessedCount)
-        gameSummaryIntent.putExtra("skippedCount", skippedCount)
-        gameSummaryIntent.putExtra("finishReason", finishReason)
-
-        startActivity(gameSummaryIntent)
-    }
-
-    private fun formatTime(totalSecs: Long): String {
-        return DateUtils.formatElapsedTime(totalSecs)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        builder = GsonBuilder()
-        val gson = builder?.create()
-        timer?.cancel()
-
-        outState.run {
-            outState.putBoolean("isFirstInitialization", false)
-            outState.putLong("lifetime", lifetime)
-            val wordsToSave = words.filter { word -> word !== "" }
-            if (gson != null) {
-                outState.putString("words", gson.toJson(wordsToSave))
-            }
-        }
-
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        lifetime = savedInstanceState.getLong("lifetime")
-        isFirstInitialization = savedInstanceState.getBoolean("isFirstInitialization")
-
-        initTimer(lifetime)
-
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
-    override fun finish() {
-        super.finish()
-        timer?.cancel()
-    }
-
-    private fun goToCatalog() {
-        timer?.cancel()
-        AppMetrikaSingleton.reportEvent(
-            applicationContext,
-            "Game/GoToCatalog",
-            HashMap(),
-        )
-        val intent = Intent(this, CatalogActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        startActivity(intent)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        AppMetrikaSingleton.reportEvent(
-            applicationContext,
-            "Game/BackPressed",
-            HashMap(),
-        )
-        goToCatalog()
-    }
 }

@@ -27,7 +27,7 @@
                 android:text="@string/rules_text"
                 android:textAlignment="viewStart"
                 android:textColor="@color/text"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </ScrollView>
 
     </LinearLayout>

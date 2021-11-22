@@ -280,6 +280,4 @@ class GameActivity : AppCompatActivity() {
             finishGame("words")
         }
     }
-
-
 }

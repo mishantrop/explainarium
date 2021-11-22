@@ -29,30 +29,7 @@
                 android:paddingRight="8sp"
                 android:paddingBottom="8sp"
                 app:columnCount="2"
-                app:columnOrderPreserved="false">
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/cardBackgroundLight"
-                    android:text="Button"
-                    app:layout_columnWeight="1" />
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Button"
-                    app:layout_columnWeight="1" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Button"
-                    app:layout_columnWeight="1" />
-            </androidx.gridlayout.widget.GridLayout>
+                app:columnOrderPreserved="false"/>
         </ScrollView>
 
         <LinearLayout
@@ -69,17 +46,90 @@
             <TextView
                 android:id="@+id/update_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/update_text"
                 android:textColor="@color/textInverted" />
 
             <Button
                 android:id="@+id/update_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/update_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rate_notification"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="18sp"
+            android:paddingTop="4sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="4sp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/star_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/star_text"
+                android:textColor="@color/textInverted" />
+
+            <Button
+                android:id="@+id/rate_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/star_button" />
+
+            <Button
+                android:id="@+id/star_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="0dip"
+                android:paddingTop="0dip"
+                android:paddingRight="0dip"
+                android:paddingBottom="0dip"
+                android:text="@string/star_close_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/cardBackgroundLight"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bottom_menu_help_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bottom_menu_help_button"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/bottom_menu_privacy_policy_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bottom_menu_privacy_policy_button"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/bottom_menu_about_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bottom_menu_about_button"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 

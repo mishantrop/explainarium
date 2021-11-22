@@ -15,32 +15,26 @@ import com.quasigames.explainarium.entity.AppMetrikaSingleton
 import com.quasigames.explainarium.entity.CatalogSubject
 
 class GameActivity : AppCompatActivity() {
-    private var builder: GsonBuilder? = null
+    private lateinit var builder: GsonBuilder
     private var currentWordIdx = 0
     private var timerLifetime: Long = 120_000
-    private var timer: CountDownTimer? = null
+    private lateinit var timer: CountDownTimer
     private var words: MutableList<String> = mutableListOf()
-    private var wordsStat: MutableMap<String?, Boolean?>? = null
+    private lateinit var wordsStat: MutableMap<String?, Boolean?>
     private var isFirstInitialization = true
 
     private fun getSubjectWords(subjectJSON: String): MutableList<String> {
         builder = GsonBuilder()
-        val gson = builder?.create()
-        val subjectInstance = gson?.fromJson(subjectJSON, CatalogSubject::class.java)
-        val wordsShuffled = subjectInstance?.words?.shuffled()
-        val words2 = wordsShuffled?.toMutableList()
-
-        if (words2 != null) {
-            return words2
-        }
-
-        return mutableListOf()
+        val gson = builder.create()
+        val subjectInstance = gson.fromJson(subjectJSON, CatalogSubject::class.java)
+        val wordsShuffled = subjectInstance.words.shuffled()
+        return wordsShuffled.toMutableList()
     }
 
     private fun getWordsFromSavedInstanceState(savedInstanceState: Bundle): MutableList<String> {
         val wordsJSON = savedInstanceState.getString("words", "")
         builder = GsonBuilder()
-        val gson = builder?.create()
+        val gson = builder.create()
         if (gson != null) {
             val wordsType = object : TypeToken<List<String>>() {}.type
             return gson.fromJson(wordsJSON, wordsType)
@@ -98,7 +92,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         builder = GsonBuilder()
-        val gson = builder?.create()
+        val gson = builder.create()
 
         outState.run {
             outState.putBoolean("isFirstInitialization", false)
@@ -123,7 +117,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun finish() {
         super.finish()
-        timer?.cancel()
+        timer.cancel()
     }
 
     override fun onResume() {
@@ -133,15 +127,15 @@ class GameActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        timer?.cancel()
+        timer.cancel()
     }
 
     private fun finishGame(finishReason: String) {
         val gameSummaryIntent = Intent(this, GameSummaryActivity::class.java)
         gameSummaryIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
 
-        val guessedCount = getGuessedCount(wordsStat!!)
-        val skippedCount = getSkippedCount(wordsStat!!)
+        val guessedCount = getGuessedCount(wordsStat)
+        val skippedCount = getSkippedCount(wordsStat)
 
         gameSummaryIntent.putExtra("guessedCount", guessedCount)
         gameSummaryIntent.putExtra("skippedCount", skippedCount)
@@ -187,7 +181,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun goToCatalog() {
-        timer?.cancel()
+        timer.cancel()
         AppMetrikaSingleton.reportEvent(
             applicationContext,
             "Game/GoToCatalog",
@@ -200,7 +194,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun handleWordAction(isGuessed: Boolean) {
         val word = getCurrentWord()
-        wordsStat!![word] = isGuessed
+        wordsStat[word] = isGuessed
         // Типа удаление слова из текущего списка, чтобы оно не повторялось при пересоздании Activity
         words[currentWordIdx] = ""
         setNextWord()

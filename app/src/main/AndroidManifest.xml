@@ -7,7 +7,7 @@
         android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".Explainarium"
@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.RulesActivity"></activity>
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.CatalogActivity" />
         <activity android:name=".activity.GameSummaryActivity" />
@@ -23,8 +24,7 @@
         <activity android:name=".activity.PreparingActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:noHistory="true"
-        >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,8 +34,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/application_id_debug"
-        />
+            android:value="@string/application_id_debug" />
     </application>
 
 </manifest>

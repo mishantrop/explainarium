@@ -18,13 +18,41 @@
     <string name="update_text">Доступно обновление</string>
     <string name="update_button">🔥 Обновить</string>
 
+    <string name="star_text">Оцените игру, пожалуйста</string>
+    <string name="star_button">🌟 Оценить</string>
+    <string name="star_close_button">❌</string>
+
+    <string name="action_rules">А как играть?</string>
     <string name="action_about">Об игре</string>
+    <string name="action_privacy_policy">Политика конфиденциальности</string>
+    <string name="action_privacy_policy_uri">https://quasi-art.ru/quasigames/explainarium/privacy-policy</string>
+
     <string name="about_title">Объясняриум</string>
     <string name="about_version_code">Сборка: %1$s</string>
     <string name="about_build_type">Тип: %1$s</string>
     <string name="about_version_name">Версия: %1$s</string>
-    <string name="action_privacy_policy">Политика конфиденциальности</string>
-    <string name="action_privacy_policy_uri">https://quasi-art.ru/quasigames/explainarium/privacy-policy</string>
+    <string name="statistics_v1_game_count">Сыграно игр: %1$s</string>
+
+    <string name="bottom_menu_help_button">🤔 Как играть?</string>
+    <string name="bottom_menu_privacy_policy_button">🔒</string>
+    <string name="bottom_menu_about_button">🔎️</string>
+
+    <string name="rules_text">
+        \tДанная игра похожа на всем известные игры вроде Крокодил или Шляпа, а также англоязычные Алиас или Активити.\n
+        \n
+        \tПравила игры просты: один игрок читает слово с экрана и объясняет вслух, а остальные игроки пытаются угадать загаданное.\n
+
+        \n
+        Объясняя слово, игрок не может называть:\n
+        • само слово;\n
+        • однокоренные слова (к слову или его частям);\n
+        • перевод слова или его части на другой язык.\n
+        Также нельзя что-либо писать, рисовать, показывать жестами.\n
+        \n
+        \tСлова объединены в категории (Спорт, Природа, Компьютерные игры и так далее).\n
+        \tВ какой очерёдности играть, как выявлять победителя и прочие детали остаются на усмотрение игроков, ведь интересен сам процесс.\n
+        \tНа каждую категорию выделяется определённое количество времени.
+    </string>
 
     <!-- -
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.

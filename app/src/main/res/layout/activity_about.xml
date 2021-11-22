@@ -55,6 +55,17 @@
             android:text="@string/about_version_name"
             android:textColor="@color/text"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/statistics_v1_game_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/statistics_v1_game_count"
+            android:textColor="@color/text"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

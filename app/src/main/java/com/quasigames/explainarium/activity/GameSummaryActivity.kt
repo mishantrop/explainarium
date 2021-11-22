@@ -1,6 +1,8 @@
 package com.quasigames.explainarium.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
@@ -8,8 +10,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.quasigames.explainarium.R
 import com.quasigames.explainarium.entity.AppMetrikaSingleton
+import com.quasigames.explainarium.entity.StatisticsV1Singleton
 
 class GameSummaryActivity : AppCompatActivity() {
+    private lateinit var statistics: SharedPreferences
+
     private fun goToCatalog() {
         val intent = Intent(this, CatalogActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -18,7 +23,7 @@ class GameSummaryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        statistics = getSharedPreferences(StatisticsV1Singleton.FILENAME, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_game_summary)
         val res: Resources = resources
 
@@ -47,6 +52,11 @@ class GameSummaryActivity : AppCompatActivity() {
             goToCatalog()
         }
 
+        StatisticsV1Singleton.incGameCount(statistics)
+
+        /**
+         * Сообщаем, куда нужно
+         */
         AppMetrikaSingleton.reportEvent(
             applicationContext,
             "Game/Summary",

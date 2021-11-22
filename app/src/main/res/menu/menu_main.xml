@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.quasigames.explainarium.MainActivity">
     <item
+        android:id="@+id/action_rules"
+        android:orderInCategory="100"
+        android:title="@string/action_rules"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_privacy_policy"
         android:orderInCategory="100"
         android:title="@string/action_privacy_policy"

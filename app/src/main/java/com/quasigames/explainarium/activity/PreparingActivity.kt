@@ -8,7 +8,7 @@ import com.quasigames.explainarium.R
 import kotlinx.android.synthetic.main.activity_preparing.*
 
 class PreparingActivity : AppCompatActivity() {
-    private var timer: CountDownTimer? = null
+    private lateinit var timer: CountDownTimer
     private val initialTimerValueSecs: Long = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class PreparingActivity : AppCompatActivity() {
 
     override fun finish() {
         super.finish()
-        timer?.cancel()
+        timer.cancel()
     }
 
     private fun goToCatalog() {

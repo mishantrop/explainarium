@@ -3,19 +3,16 @@ package com.quasigames.explainarium.activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.gridlayout.widget.GridLayout
@@ -23,10 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.R
-import com.quasigames.explainarium.entity.AppMetrikaSingleton
-import com.quasigames.explainarium.entity.UpdaterSingleton
-import com.quasigames.explainarium.entity.Catalog
-import com.quasigames.explainarium.entity.CatalogSubject
+import com.quasigames.explainarium.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,16 +28,95 @@ import java.io.BufferedReader
 import java.io.InputStream
 
 class CatalogActivity : AppCompatActivity() {
+    private lateinit var statistics: SharedPreferences
+
+    private fun goToStore() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        }
+    }
+
+    private fun initRateNotification() {
+        val rateNotification: LinearLayout = findViewById(R.id.rate_notification)
+        val rateNotificationButton: Button = findViewById(R.id.rate_button)
+        val rateCloseNotificationButton: Button = findViewById(R.id.star_close_button)
+
+        if (StatisticsV1Singleton.canShow(statistics)) {
+            rateNotification.visibility = View.VISIBLE
+
+            // Нажатие на кнопку Оценить
+            rateNotificationButton.setOnClickListener {
+                rateNotification.visibility = View.GONE
+
+                statistics = getSharedPreferences(StatisticsV1Singleton.FILENAME, Context.MODE_PRIVATE)
+                val editor = statistics.edit()
+                editor.putBoolean(StatisticsV1Singleton.STATISTICS_V1_GAME_AGREED, true).apply()
+
+                AppMetrikaSingleton.reportEvent(
+                    applicationContext,
+                    "Rater/Rate",
+                    HashMap(), // TODO Количество игр
+                )
+
+                goToStore()
+            }
+
+            // Нажатие на кнопку с крестиком
+            rateCloseNotificationButton.setOnClickListener {
+                rateNotification.visibility = View.GONE
+
+                AppMetrikaSingleton.reportEvent(
+                    applicationContext,
+                    "Rater/Dismiss",
+                    HashMap(), // TODO Количество игр
+                )
+
+                statistics = getSharedPreferences("statistics1", Context.MODE_PRIVATE)
+                val editor = statistics.edit()
+                editor.putBoolean(StatisticsV1Singleton.STATISTICS_V1_RATE_DISMISSED, true).apply()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        statistics = getSharedPreferences(StatisticsV1Singleton.FILENAME, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_catalog)
 
         try {
+            /**
+             * Нижняя навигация
+             */
+            val bottomMenuButtonRules: Button = findViewById(R.id.bottom_menu_help_button)
+            bottomMenuButtonRules.setOnClickListener {
+                startActivity(Intent(this, RulesActivity::class.java))
+            }
+            val bottomMenuButtonPrivacyPolicy: Button = findViewById(R.id.bottom_menu_privacy_policy_button)
+            bottomMenuButtonPrivacyPolicy.setOnClickListener {
+                AppMetrikaSingleton.reportEvent(
+                    applicationContext,
+                    "Catalog/PrivacyPolicy",
+                    HashMap(),
+                )
+                redirectToPrivacyPolicy()
+            }
+            val bottomMenuButtonAbout: Button = findViewById(R.id.bottom_menu_about_button)
+            bottomMenuButtonAbout.setOnClickListener {
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+
+            /**
+             * Инициализация каталога
+             */
             val catalog = getCatalogFromFile()
 
             buildCatalogViews(catalog.subjects)
 
+            /**
+             * Прверка обновлений
+             */
             if (UpdaterSingleton.isEnabled()) {
                 checkUpdates()
             }
@@ -55,6 +128,11 @@ class CatalogActivity : AppCompatActivity() {
                 println("Explainarium | Stack: $x")
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRateNotification()
     }
 
     private fun checkUpdates() {
@@ -82,42 +160,16 @@ class CatalogActivity : AppCompatActivity() {
                 updateNotification.visibility = View.VISIBLE
 
                 updateNotificationButton.setOnClickListener {
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                    } catch (e: ActivityNotFoundException) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                    }
+                    AppMetrikaSingleton.reportEvent(
+                        applicationContext,
+                        "Updater/Click",
+                        HashMap(),
+                    )
+                    goToStore()
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
             }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_privacy_policy -> {
-                AppMetrikaSingleton.reportEvent(
-                    applicationContext,
-                    "Catalog/PrivacyPolicy",
-                    HashMap(),
-                )
-                redirectToPrivacyPolicy()
-                true
-            }
-            R.id.action_about -> {
-                val aboutIntent = Intent(this, AboutActivity::class.java)
-                startActivity(aboutIntent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -167,7 +219,6 @@ class CatalogActivity : AppCompatActivity() {
 
         val builder = GsonBuilder()
         val gson = builder.create()
-        val res: Resources = resources
         val catalogLayout: GridLayout = findViewById(R.id.catalog)
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             catalogLayout.columnCount = 2
@@ -181,7 +232,6 @@ class CatalogActivity : AppCompatActivity() {
         subjects?.forEach { subject ->
             val subjectCard = LinearLayout(this)
             val subjectButton = Button(this)
-            val subjectWordsCount = TextView(this)
 
             // Кнопка
             subjectButton.text = subject.title
@@ -219,17 +269,12 @@ class CatalogActivity : AppCompatActivity() {
                 subjectImage.setImageDrawable(d)
                 subjectImage.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    320
+                    400,
                 )
                 subjectCard.addView(subjectImage)
             }
 
-            // Количество слов
-            subjectWordsCount.text = String.format(res.getString(R.string.catalog_subject_wordscount), subject.words.size)
-            subjectWordsCount.gravity = Gravity.CENTER_HORIZONTAL
-
             // Собираем всё вместе
-            subjectCard.addView(subjectWordsCount)
             subjectCard.addView(subjectButton)
 
             if (isImageExists) {

@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.quasigames.explainarium.BuildConfig
 import java.io.BufferedReader
 import java.io.InputStream
-import java.net.ConnectException
 import java.net.HttpURLConnection
 import java.net.URL
 

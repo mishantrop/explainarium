@@ -219,7 +219,6 @@ class CatalogActivity : AppCompatActivity() {
 
         val builder = GsonBuilder()
         val gson = builder.create()
-        // val res: Resources = resources
         val catalogLayout: GridLayout = findViewById(R.id.catalog)
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             catalogLayout.columnCount = 2

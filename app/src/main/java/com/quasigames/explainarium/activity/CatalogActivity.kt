@@ -9,14 +9,10 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-//import android.view.Menu
-// import android.view.Gravity
-//import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ImageView
-// import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.gridlayout.widget.GridLayout
@@ -237,7 +233,6 @@ class CatalogActivity : AppCompatActivity() {
         subjects?.forEach { subject ->
             val subjectCard = LinearLayout(this)
             val subjectButton = Button(this)
-            // val subjectWordsCount = TextView(this)
 
             // Кнопка
             subjectButton.text = subject.title
@@ -280,12 +275,7 @@ class CatalogActivity : AppCompatActivity() {
                 subjectCard.addView(subjectImage)
             }
 
-            // Количество слов
-            // subjectWordsCount.text = String.format(res.getString(R.string.catalog_subject_wordscount), subject.words.size)
-            // subjectWordsCount.gravity = Gravity.CENTER_HORIZONTAL
-
             // Собираем всё вместе
-            // subjectCard.addView(subjectWordsCount)
             subjectCard.addView(subjectButton)
 
             if (isImageExists) {

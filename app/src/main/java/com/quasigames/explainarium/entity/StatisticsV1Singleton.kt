@@ -1,6 +1,5 @@
 package com.quasigames.explainarium.entity
 
-import android.content.Context
 import android.content.SharedPreferences
 
 object StatisticsV1Singleton {

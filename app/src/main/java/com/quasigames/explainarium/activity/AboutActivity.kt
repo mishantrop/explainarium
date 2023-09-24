@@ -32,6 +32,8 @@ class AboutActivity : AppCompatActivity() {
 
         textViewStatisticsV1GameCount.text = String.format(res.getString(R.string.statistics_v1_game_count), StatisticsV1Singleton.getGameCount(statistics))
 
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+
         AppMetrikaSingleton.reportEvent(
             applicationContext,
             "About",

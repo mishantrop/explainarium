@@ -64,6 +64,7 @@ class GameSummaryActivity : AppCompatActivity() {
         )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         goToCatalog()
     }

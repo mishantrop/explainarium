@@ -234,7 +234,7 @@ class CatalogActivity : AppCompatActivity() {
             val subjectButton = Button(this)
 
             // Кнопка
-            subjectButton.text = subject.title
+            subjectButton.text = "${subject.title} (${subject.words.size})"
             subjectButton.height = 100
             subjectButton.width = 100
             subjectButton.textSize = 11.0F

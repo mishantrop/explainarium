@@ -3,9 +3,9 @@ package com.quasigames.explainarium.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.quasigames.explainarium.R
-import kotlinx.android.synthetic.main.activity_preparing.*
 
 class PreparingActivity : AppCompatActivity() {
     private lateinit var timer: CountDownTimer
@@ -14,10 +14,11 @@ class PreparingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preparing)
+        val prepareCounterText: TextView = findViewById(R.id.prepare_counter_text)
 
         val subject = intent.getStringExtra("subject")
 
-        prepare_counter_text.text = (initialTimerValueSecs + 1).toString()
+        prepareCounterText.text = (initialTimerValueSecs + 1).toString()
         val textGo = getString(R.string.preparing_go)
 
         val gameIntent = Intent(this, GameActivity::class.java)
@@ -27,11 +28,11 @@ class PreparingActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val timeLeft = millisUntilFinished / 1000
                 val text = timeLeft.toString()
-                prepare_counter_text.text = if (timeLeft <= 0) textGo else text
+                prepareCounterText.text = if (timeLeft <= 0) textGo else text
             }
 
             override fun onFinish() {
-                prepare_counter_text.text = textGo
+                prepareCounterText.text = textGo
 
                 startActivity(gameIntent)
             }
@@ -49,6 +50,7 @@ class PreparingActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         goToCatalog()

@@ -5,7 +5,7 @@ https://play.google.com/store/apps/details?id=com.quasigames.zapominarium
 
 <table>
   <tr>
-    <td> <img src="https://github.com/mishantrop/explainarium/blob/master/graphics/1.9/catalog.png" width="200"></td>
+    <td><img src="https://github.com/mishantrop/explainarium/blob/master/graphics/1.9/catalog.png" width="200"></td>
     <td><img src="https://github.com/mishantrop/explainarium/blob/master/graphics/1.9/summary.png" width="200"></td>
     <td><img src="https://github.com/mishantrop/explainarium/blob/master/graphics/1.9/game.png" width="200"></td>
   </tr>
@@ -15,5 +15,9 @@ https://play.google.com/store/apps/details?id=com.quasigames.zapominarium
 </table>
 
 ## Roadmap
+* Гарри Поттер
+* Переместить из книг в сказки что нужно
+* Больше книг
+* Мультсериалы
 * Настройки времени
 * kotlinx.serialization

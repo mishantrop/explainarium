@@ -47,15 +47,6 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/game_correct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingTop="32dp"
-                android:paddingBottom="32dp"
-                android:text="@string/game_correct" />
-
-            <Button
                 android:id="@+id/game_incorrect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,6 +54,15 @@
                 android:paddingTop="32dp"
                 android:paddingBottom="32dp"
                 android:text="@string/game_incorrect" />
+
+            <Button
+                android:id="@+id/game_correct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="32dp"
+                android:paddingBottom="32dp"
+                android:text="@string/game_correct" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

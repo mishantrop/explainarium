@@ -80,6 +80,7 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         AppMetrikaSingleton.reportEvent(

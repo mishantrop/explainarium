@@ -29,7 +29,6 @@ class AboutActivity : AppCompatActivity() {
         textViewVersionCode.text = String.format(res.getString(R.string.about_version_code), BuildConfig.VERSION_CODE)
         textViewBuildType.text = String.format(res.getString(R.string.about_build_type), BuildConfig.BUILD_TYPE)
         textViewVersionName.text = String.format(res.getString(R.string.about_version_name), BuildConfig.VERSION_NAME)
-
         textViewStatisticsV1GameCount.text = String.format(res.getString(R.string.statistics_v1_game_count), StatisticsV1Singleton.getGameCount(statistics))
 
         actionBar?.setDisplayHomeAsUpEnabled(true)

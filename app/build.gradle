@@ -8,7 +8,7 @@ android {
         applicationId "com.quasigames.explainarium"
         minSdkVersion 29
         targetSdk 34
-        versionCode 16
+        versionCode 19
         versionName "1.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -52,7 +52,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.yandex.android:mobmetricalib:3.21.0'
+    implementation 'com.yandex.android:mobmetricalib:5.3.0'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'

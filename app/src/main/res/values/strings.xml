@@ -2,14 +2,19 @@
     <string name="app_name">Объясняриум</string>
 
     <string name="catalog_subject_wordscount">Слов: %1$s</string>
-    <string name="game_time_is_over">⌛ 00:00</string>
+    <string name="game_time_is_over" translatable="false">⌛ 00:00</string>
     <string name="game_time">⏳ %1$s</string>
+
     <string name="game_summary_zero_guessed_and_skipped">😐 Ясно</string>
     <string name="game_summary_normalno">👍 Ну и норм</string>
     <string name="game_summary_guessed">✅ Угадано: %1$s</string>
     <string name="game_summary_skipped">❌ Пропущено: %1$s</string>
     <string name="game_summary_goto_catalog">Выбрать категорию</string>
-    <string name="game_initial_timer">00:00</string>
+
+    <string name="game_start_start">Начать</string>
+    <string name="game_start_wordcount">Карточек: %1$s</string>
+
+    <string name="game_initial_timer" translatable="false">00:00</string>
     <string name="game_correct">✅ Угадано</string>
     <string name="game_incorrect">❌ Пропуск</string>
     <string name="preparing_go">Погнали</string>
@@ -20,12 +25,12 @@
 
     <string name="star_text">Оцените игру, пожалуйста</string>
     <string name="star_button">🌟 Оценить</string>
-    <string name="star_close_button">❌</string>
+    <string name="star_close_button" translatable="false">❌</string>
 
     <string name="action_rules">А как играть?</string>
     <string name="action_about">Об игре</string>
     <string name="action_privacy_policy">Политика конфиденциальности</string>
-    <string name="action_privacy_policy_uri">https://quasi-art.ru/quasigames/explainarium/privacy-policy</string>
+    <string name="action_privacy_policy_uri" translatable="false">https://quasi-art.ru/quasigames/explainarium/privacy-policy</string>
 
     <string name="about_title">Объясняриум</string>
     <string name="about_version_code">Сборка: %1$s</string>
@@ -34,8 +39,8 @@
     <string name="statistics_v1_game_count">Сыграно игр: %1$s</string>
 
     <string name="bottom_menu_help_button">🤔 Как играть?</string>
-    <string name="bottom_menu_privacy_policy_button">🔒</string>
-    <string name="bottom_menu_about_button">🔎️</string>
+    <string name="bottom_menu_privacy_policy_button" translatable="false">🔒</string>
+    <string name="bottom_menu_about_button" translatable="false">🔎️</string>
 
     <string name="rules_text">
         \tДанная игра похожа на всем известные игры вроде Крокодил или Шляпа, а также англоязычные Алиас или Активити.\n
@@ -60,9 +65,9 @@
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
-    <string name="application_id_debug">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="interstitial_ad_unit_id_debug">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="application_id_debug" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="interstitial_ad_unit_id_debug" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
-    <string name="application_id_release">ca-app-pub-9685015554011603~1039739722</string>
-    <string name="interstitial_ad_unit_id_release">ca-app-pub-9685015554011603/8495557913</string>
+    <string name="application_id_release" translatable="false">ca-app-pub-9685015554011603~1039739722</string>
+    <string name="interstitial_ad_unit_id_release" translatable="false">ca-app-pub-9685015554011603/8495557913</string>
 </resources>

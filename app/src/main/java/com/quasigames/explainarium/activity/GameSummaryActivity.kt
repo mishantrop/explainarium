@@ -30,7 +30,7 @@ class GameSummaryActivity : AppCompatActivity() {
         val opinionTextView: TextView = findViewById(R.id.game_summary_opinion)
         val guessedTextView: TextView = findViewById(R.id.game_summary_guessed)
         val skippedTextView: TextView = findViewById(R.id.game_summary_skipped)
-        val gotoCatalogButton: Button = findViewById(R.id.button_goto_catalog)
+        val gotoCatalogButton: Button = findViewById(R.id.game_summary_goto_catalog)
 
         val guessedCount = intent.getIntExtra("guessedCount", 0)
         val skippedCount = intent.getIntExtra("skippedCount", 0)

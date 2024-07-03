@@ -9,7 +9,7 @@ import com.quasigames.explainarium.R
 
 class PreparingActivity : AppCompatActivity() {
     private lateinit var timer: CountDownTimer
-    private val initialTimerValueSecs: Long = 3
+    private val initialTimerValueSecs: Long = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

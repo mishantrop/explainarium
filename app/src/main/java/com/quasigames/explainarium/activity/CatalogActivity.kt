@@ -284,16 +284,9 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun goToSubject(gson: Gson, subject: CatalogSubject) {
-        // Отправка события о старте определённой категории
-        AppMetrikaSingleton.reportEvent(
-            applicationContext,
-            "Game/Start",
-            hashMapOf("title" to subject.title),
-        )
-
-        val preparingIntent = Intent(this, PreparingActivity::class.java)
-        preparingIntent.putExtra("subject", gson.toJson(subject))
-        startActivity(preparingIntent)
+        val gameStartIntent = Intent(this, GameStartActivity::class.java)
+        gameStartIntent.putExtra("subject", gson.toJson(subject))
+        startActivity(gameStartIntent)
     }
 
     @Suppress("SameParameterValue")

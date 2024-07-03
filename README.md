@@ -15,9 +15,11 @@ https://play.google.com/store/apps/details?id=com.quasigames.zapominarium
 </table>
 
 ## Roadmap
-* Гарри Поттер
-* Переместить из книг в сказки что нужно
-* Больше книг
-* Мультсериалы
-* Настройки времени
-* kotlinx.serialization
+* UI: отцентровать слово по вертикали в GameActivity
+* Catalog: Больше персонажей книг
+* Catalog: Велосипеды
+* Catalog: Мультсериалы
+* UX: Настройки времени
+
+## Issues
+* Перевернуть экран во время GameActivity

@@ -5,53 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundLight"
-    tools:context="com.quasigames.explainarium.activity.GameSummaryActivity">
+    tools:context=".activity.GameStartActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        android:scrollbars="vertical"
         android:textAlignment="center">
 
         <TextView
-            android:id="@+id/game_summary_opinion"
+            android:id="@+id/game_start_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:text="@string/game_summary_normalno"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="32sp" />
 
         <TextView
-            android:id="@+id/game_summary_guessed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/game_summary_guessed"
-            android:textAlignment="center"
-            android:textColor="@color/text"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/game_summary_skipped"
+            android:id="@+id/game_start_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="32dp"
-            android:text="@string/game_summary_skipped"
+            android:text="@string/game_start_wordcount"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/game_summary_goto_catalog"
+            android:id="@+id/game_start_start"
             android:layout_width="216dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,8 +47,7 @@
             android:paddingTop="32dp"
             android:paddingRight="32dp"
             android:paddingBottom="32dp"
-            android:text="@string/game_summary_goto_catalog"
+            android:text="@string/game_start_start"
             android:textAlignment="center" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
